@@ -1,0 +1,24 @@
+{
+  "name" : "nathanjosiah/zf2-devcms",
+  "version" : "0.0.1",
+  "require" : {
+    "php": ">=5.5",
+    "zendframework/zendframework" : "=2.4.8"
+  },
+  "license": "MIT",
+    "authors": [
+        {
+            "name": "Nathan Smith",
+            "email": "nathanjosiah@gmail.com"
+        }
+    ],
+    "keywords": [
+        "zf2",
+        "module"
+    ],
+    "autoload": {
+        "psr-4": {
+            "DevCms\\": "src/DevCms/"
+        }
+    }
+}
