@@ -6,7 +6,7 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Filter\FilterChain;
 
-class CmsRendererServiceFactory implements FactoryInterface {
+class ContentRendererServiceFactory implements FactoryInterface {
 
 	public function createService(ServiceLocatorInterface $serviceLocator) {
 		$filter_chain = new FilterChain();
@@ -23,7 +23,7 @@ class CmsRendererServiceFactory implements FactoryInterface {
 				}
 			}
 		}
-		$renderer = new CmsRenderer($filter_chain);
+		$renderer = new ContentRenderer($filter_chain);
 		return $renderer;
 	}
 }

@@ -1,0 +1,39 @@
+<?php
+$available_blocks = $this->available_blocks;
+
+$this->headTitle('DevCms')->prepend('Content Block Admin');
+?>
+<style>
+	table td,
+	table th {
+		border: 1px solid;
+		padding: 5px;
+	}
+	#devcms-wrapper {
+		width: 550px;
+		margin: 0 auto;
+	}
+</style>
+<div id="devcms-wrapper">
+	<h1>DevCms Content Block List</h1>
+<? if(empty($available_blocks)) { ?>
+	<p>There are no configured CMS content blocks to edit. Add them in the ZF2 config.</p>
+<? } else { ?>
+	<table>
+		<thead>
+			<tr>
+				<th>Label</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+<?	foreach($available_blocks as $key => $label) { ?>
+			<tr>
+				<td><?=$this->escapehtml($label)?></td>
+				<td><a href="<?=$this->url('devcms-admin/content-block/edit',['id'=>$key])?>">Edit</a></td>
+			</tr>
+<?	} ?>
+		</tbody>
+	</table>
+<? } ?>
+</div>

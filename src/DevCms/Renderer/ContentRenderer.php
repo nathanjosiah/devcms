@@ -4,7 +4,7 @@ namespace DevCms\Renderer;
 
 use DevCms\Entity\ContentEntity;
 use Zend\Filter\FilterChain;
-class CmsRenderer {
+class ContentRenderer {
 	protected $filterChain;
 	public function __construct(FilterChain $filter_chain) {
 		$this->filterChain = $filter_chain;

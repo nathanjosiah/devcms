@@ -2,14 +2,14 @@
 
 namespace DevCms\View\Helper;
 
-use DevCms\Renderer\CmsRenderer;
+use DevCms\Renderer\ContentRenderer;
 use Zend\Cache\Storage\StorageInterface;
 use Zend\View\Helper\AbstractHelper;
 use DevCms\Resolver\DbResolver;
 use DevCms\Entity\ContentEntity;
 class CmsContent extends AbstractHelper {
 	protected $storage,$renderer,$resolver;
-	public function __construct(DbResolver $resolver,CmsRenderer $renderer,StorageInterface $storage) {
+	public function __construct(DbResolver $resolver,ContentRenderer $renderer,StorageInterface $storage) {
 		$this->storage = $storage;
 		$this->renderer = $renderer;
 		$this->resolver = $resolver;

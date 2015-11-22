@@ -1,0 +1,22 @@
+<?php
+/* @var $block \DevCms\Entity\ContentEntity */
+$block = $this->block;
+$form = $this->form;
+$this->headTitle('DevCms')->prepend('Content Block Admin')->prepend('Edit "' . $block->label . '"');
+$form->prepare();
+?>
+<style>
+	#devcms-wrapper {
+		width: 550px;
+		margin: 0 auto;
+	}
+</style>
+<div id="devcms-wrapper">
+	<a href="<?=$this->url('devcms-admin/content-block/list')?>">&lsaquo; Back to list</a>
+	<h1>DevCms Content Block Edit "<?=$this->escapehtml($block->label)?>"</h1>
+	<?=$this->form()->openTag($form)?>
+	<?=$this->formrow($form->get('html'),'append')?>
+	<br />
+	<input type="submit" value="Save" />
+	<?=$this->form()->closeTag($form)?>
+</div>

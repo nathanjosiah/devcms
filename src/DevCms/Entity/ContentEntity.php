@@ -3,5 +3,5 @@
 namespace DevCms\Entity;
 
 class ContentEntity {
-	public $id,$html;
+	public $id,$html,$label;
 }
