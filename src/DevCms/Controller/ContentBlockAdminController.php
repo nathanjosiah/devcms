@@ -28,7 +28,7 @@ class ContentBlockAdminController extends AbstractActionController {
 
 	public function editAction() {
 		$sl = $this->getServiceLocator();
-		$resolver = $sl->get('DevCms\Resolver\DbResolver');
+		$content_block_table = $sl->get('DevCms\Table\ContentBlockTable');
 		$devcms_config = $sl->get('Config')['devcms'];
 
 		$id = $this->params('id');
@@ -36,7 +36,7 @@ class ContentBlockAdminController extends AbstractActionController {
 			return $this->notFoundAction();
 		}
 		$block_config = $devcms_config['content_blocks'][$id];
-		$block = $resolver->resolveModelWithId($id);
+		$block = $content_block_table->fetchWithId($id);
 		if(!$block) {
 			$block = new ContentEntity();
 			$block->id = $id;
@@ -51,7 +51,7 @@ class ContentBlockAdminController extends AbstractActionController {
 		if($request->isPost()) {
 			$form->setData($request->getPost());
 			if($form->isValid()) {
-				$resolver->setContent($id,$form->getInputFilter()->getValue('html'));
+				$content_block_table->setContent($id,$form->getInputFilter()->getValue('html'));
 				return $this->redirect()->toRoute('devcms-admin/content-block/list');
 			}
 		}

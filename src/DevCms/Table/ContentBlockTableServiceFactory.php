@@ -1,13 +1,12 @@
 <?php
 
-namespace DevCms\Resolver;
+namespace DevCms\Table;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
-use Zend\Db\Sql\Sql;
 
-class DbResolverServiceFactory implements FactoryInterface {
+class ContentBlockTableServiceFactory implements FactoryInterface {
 
 	public function createService(ServiceLocatorInterface $serviceLocator) {
 		$hydrator = $serviceLocator->get('DevCms\Entity\Hydrator\ContentEntityHydrator');
@@ -15,8 +14,7 @@ class DbResolverServiceFactory implements FactoryInterface {
 		$adapter = $serviceLocator->get('Zend\Db\Adapter\Adapter');
 		$table_name = $serviceLocator->get('config')['devcms']['content_table_name'];
 		$result_set = new HydratingResultSet($hydrator,$entity);
-		$sql = new Sql($adapter);
-		$resolver = new DbResolver($table_name,$sql,$result_set);
-		return $resolver;
+		$table = new ContentBlockTable($table_name,$adapter,null,$result_set);
+		return $table;
 	}
 }

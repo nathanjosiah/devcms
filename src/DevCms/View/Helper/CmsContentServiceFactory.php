@@ -11,8 +11,8 @@ class CmsContentServiceFactory implements FactoryInterface {
 		$serviceLocator = $helperPluginManager->getServiceLocator();
 		$renderer = $serviceLocator->get('DevCms\Renderer\ContentRenderer');
 		$storage = $serviceLocator->get('DevCms\Cache\ContentCache');
-		$resolver = $serviceLocator->get('DevCms\Resolver\DbResolver');
-		$helper = new CmsContent($resolver,$renderer,$storage);
+		$content_block_table = $serviceLocator->get('DevCms\Table\ContentBlockTable');
+		$helper = new CmsContent($content_block_table,$renderer,$storage);
 		return $helper;
 	}
 }

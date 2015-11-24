@@ -2,6 +2,7 @@
 return [
 	'devcms' => [
 		'content_table_name' => 'cms_content',
+		'pages_table_name' => 'cms_pages',
 		'cache_storage' => [
 			// Set to blackhole to disable cache
 			'adapter' => 'filesystem',
@@ -13,20 +14,20 @@ return [
 		// May be normal filter names or normal SM keys.
 		'content_filters' => [],
 		'content_blocks' => [
-			/*
-			'foo' => [
+			/* 'foo' => [
 				'label' => 'Header tagline',
 				'default_value' => 'optional',
 			],
 			'foo-bar' => [
 				'label' => 'Other thang'
-			]*/
+			] */
 		],
 		/*
 		'layouts' => [
 			'my-foo-bar' => [
 				'label' => 'Two Column Layout',
-				'template' => 'partial/cms/my-template',
+				// option a: 'template' => 'partial/cms/my-template',
+				// option b: 'view_model' => 'my-view-model-service-manager-key',
 				'variables' => [
 					[
 						'name' => 'left-col',
@@ -82,7 +83,7 @@ return [
 					]
 				]
 			]
-		]
+		],
 	],
 	'controllers' => [
 		'invokables' => [
@@ -98,17 +99,22 @@ return [
 	'service_manager' => [
 		'invokables' => [
 			'DevCms\Entity\Hydrator\ContentEntityHydrator' => 'DevCms\Entity\Hydrator\ContentEntityHydrator',
-			'DevCms\Entity\ContentEntity' => 'DevCms\Entity\ContentEntity'
+			'DevCms\Entity\ContentEntity' => 'DevCms\Entity\ContentEntity',
+			'DevCms\Router\PageRouteListener' => 'DevCms\Router\PageRouteListener',
 		],
 		'factories' => [
 			'DevCms\Renderer\ContentRenderer' => 'DevCms\Renderer\ContentRendererServiceFactory',
-			'DevCms\Resolver\DbResolver' => 'DevCms\Resolver\DbResolverServiceFactory',
+			'DevCms\Table\ContentBlockTable' => 'DevCms\Table\ContentBlockTableServiceFactory',
 			'DevCms\Cache\ContentCache' => 'DevCms\Cache\ContentCacheServiceFactory',
+			'DevCms\DefaultListener' => 'DevCms\DefaultListenerServiceFactory',
 		]
 	],
 	'view_helpers' => [
 		'factories' => [
 			'CmsContent' => 'DevCms\View\Helper\CmsContentServiceFactory',
 		]
+	],
+	'listeners' => [
+		'DevCms\DefaultListener'
 	]
 ];
