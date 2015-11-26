@@ -4,6 +4,7 @@ namespace DevCms\Router\Plugin;
 
 use Zend\Mvc\Router\Http\Segment;
 use Zend\Stdlib\RequestInterface;
+use DevCms\Table\PagesTable;
 
 class Page extends Segment {
 	protected $pagesTable;

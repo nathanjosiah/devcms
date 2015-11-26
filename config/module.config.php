@@ -1,4 +1,17 @@
 <?php
+use DevCms\Table\PagesTableServiceFactory;
+use DevCms\Entity\Hydrator\ContentEntityHydrator;
+use DevCms\Entity\ContentEntity;
+use DevCms\Renderer\ContentRendererServiceFactory;
+use DevCms\Table\ContentBlocksTableServiceFactory;
+use DevCms\Cache\ContentCacheServiceFactory;
+use DevCms\DefaultListenerServiceFactory;
+use DevCms\View\Helper\CmsContentServiceFactory;
+use DevCms\Controller\ContentBlockAdminController;
+use DevCms\Entity\PageEntity;
+use DevCms\Entity\Hydrator\Strategy\ContentBlocksStrategy;
+use DevCms\Entity\Hydrator\PageEntityHydratorServiceFactory;
+use DevCms\Controller\PageController;
 return [
 	'devcms' => [
 		'content_table_name' => 'cms_content',
@@ -27,7 +40,7 @@ return [
 			'my-foo-bar' => [
 				'label' => 'Two Column Layout',
 				// option a: 'template' => 'partial/cms/my-template',
-				// option b: 'view_model' => 'my-view-model-service-manager-key',
+				// option b: 'view_model' => 'service-manager-key',
 				'variables' => [
 					[
 						'name' => 'left-col',
@@ -87,7 +100,8 @@ return [
 	],
 	'controllers' => [
 		'invokables' => [
-			'DevCms\Controller\ContentBlockAdminController' => 'DevCms\Controller\ContentBlockAdminController',
+			'DevCms\Controller\ContentBlockAdminController' => ContentBlockAdminController::class,
+			'DevCms\Controller\PageController' => PageController::class,
 		]
 	],
 	'view_manager' => [
@@ -98,20 +112,23 @@ return [
 	],
 	'service_manager' => [
 		'invokables' => [
-			'DevCms\Entity\Hydrator\ContentEntityHydrator' => 'DevCms\Entity\Hydrator\ContentEntityHydrator',
-			'DevCms\Entity\ContentEntity' => 'DevCms\Entity\ContentEntity',
-			'DevCms\Router\PageRouteListener' => 'DevCms\Router\PageRouteListener',
+			'DevCms\Entity\Hydrator\ContentEntityHydrator' => ContentEntityHydrator::class,
+			'DevCms\Entity\ContentEntity' => ContentEntity::class,
+			'DevCms\Entity\PageEntity' => PageEntity::class,
+			'DevCms\Entity\Hydrator\Strategy\ContentBlocksStrategy' => ContentBlocksStrategy::class,
 		],
 		'factories' => [
-			'DevCms\Renderer\ContentRenderer' => 'DevCms\Renderer\ContentRendererServiceFactory',
-			'DevCms\Table\ContentBlockTable' => 'DevCms\Table\ContentBlockTableServiceFactory',
-			'DevCms\Cache\ContentCache' => 'DevCms\Cache\ContentCacheServiceFactory',
-			'DevCms\DefaultListener' => 'DevCms\DefaultListenerServiceFactory',
+			'DevCms\Renderer\ContentRenderer' => ContentRendererServiceFactory::class,
+			'DevCms\Table\ContentBlocksTable' => ContentBlocksTableServiceFactory::class,
+			'DevCms\Table\PagesTable' => PagesTableServiceFactory::class,
+			'DevCms\Entity\Hydrator\PageEntityHydrator' => PageEntityHydratorServiceFactory::class,
+			'DevCms\Cache\ContentCache' => ContentCacheServiceFactory::class,
+			'DevCms\DefaultListener' => DefaultListenerServiceFactory::class,
 		]
 	],
 	'view_helpers' => [
 		'factories' => [
-			'CmsContent' => 'DevCms\View\Helper\CmsContentServiceFactory',
+			'CmsContent' => CmsContentServiceFactory::class,
 		]
 	],
 	'listeners' => [

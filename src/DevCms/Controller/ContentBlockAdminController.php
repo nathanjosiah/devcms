@@ -28,7 +28,7 @@ class ContentBlockAdminController extends AbstractActionController {
 
 	public function editAction() {
 		$sl = $this->getServiceLocator();
-		$content_block_table = $sl->get('DevCms\Table\ContentBlockTable');
+		$content_block_table = $sl->get('DevCms\Table\ContentBlocksTable');
 		$devcms_config = $sl->get('Config')['devcms'];
 
 		$id = $this->params('id');

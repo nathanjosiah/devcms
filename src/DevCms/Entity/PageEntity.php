@@ -3,5 +3,10 @@
 namespace DevCms\Entity;
 
 class PageEntity {
-	public $id,$variables,$template,$viewModelKey,$label;
+	public $id,$template,$viewModelKey,$label;
+
+	/**
+	 * @var \DevCms\Entity\ContentEntity[]
+	 */
+	public $variables;
 }

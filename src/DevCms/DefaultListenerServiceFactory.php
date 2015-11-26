@@ -19,7 +19,7 @@ class DefaultListenerServiceFactory implements ListenerAggregateInterface,Factor
 		$router->addRoute('cms_page',[
 			'type' => 'CmsPage',
 			'options' => [
-				'route' => '/:page_id',
+				'route' => '/content/:page_id',
 				'constraints' => [
 					'page_id' => '[a-zA-Z0-9][a-zA-Z0-9-]+'
 				],
