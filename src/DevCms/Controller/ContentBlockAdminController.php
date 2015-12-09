@@ -4,7 +4,6 @@ namespace DevCms\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use DevCms\Entity\ContentEntity;
 use DevCms\Form\ContentBlockForm;
 
 class ContentBlockAdminController extends AbstractActionController {
@@ -38,9 +37,9 @@ class ContentBlockAdminController extends AbstractActionController {
 		$block_config = $devcms_config['content_blocks'][$id];
 		$block = $content_block_table->fetchWithId($id);
 		if(!$block) {
-			$block = new ContentEntity();
+			$block = $sl->get('DevCms\Entity\ContentEntity');
 			$block->id = $id;
-			$block->html = (isset($block_config['default_value']) ? $block_config['default_value'] : '');
+			$block->content = (isset($block_config['default_value']) ? $block_config['default_value'] : '');
 		}
 		$block->label = $block_config['label'];
 
@@ -51,12 +50,12 @@ class ContentBlockAdminController extends AbstractActionController {
 		if($request->isPost()) {
 			$form->setData($request->getPost());
 			if($form->isValid()) {
-				$content_block_table->setContent($id,$form->getInputFilter()->getValue('html'));
+				$content_block_table->setContent($id,$form->getInputFilter()->getValue('content'));
 				return $this->redirect()->toRoute('devcms-admin/content-block/list');
 			}
 		}
 		else {
-			$form->get('html')->setValue($block->html);
+			$form->get('content')->setValue($block->content);
 		}
 
 		$vm = new ViewModel([

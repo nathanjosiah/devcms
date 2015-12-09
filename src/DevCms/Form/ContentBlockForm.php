@@ -12,7 +12,7 @@ class ContentBlockForm extends Form {
 	public static function fromConfig(array $block_config) {
 		$form = new static('content_block');
 		$form->add([
-			'name' => 'html',
+			'name' => 'content',
 			'type' => 'textarea',
 			'options' => [
 				'label' => 'Content',

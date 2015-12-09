@@ -27,13 +27,13 @@ return [
 		// May be normal filter names or normal SM keys.
 		'content_filters' => [],
 		'content_blocks' => [
-			/* 'foo' => [
+			'foo' => [
 				'label' => 'Header tagline',
 				'default_value' => 'optional',
 			],
 			'foo-bar' => [
 				'label' => 'Other thang'
-			] */
+			]
 		],
 		/*
 		'layouts' => [
@@ -108,6 +108,7 @@ return [
 		'template_map' => [
 			'devcms/admin/content-block/list' => __DIR__ . '/../view/pages/content-block-admin/list.phtml',
 			'devcms/admin/content-block/edit' => __DIR__ . '/../view/pages/content-block-admin/edit.phtml',
+			'layout/devcms/admin' => __DIR__ . '/../view/templates/admin-layout.phtml',
 		]
 	],
 	'service_manager' => [

@@ -2,21 +2,20 @@
 /* @var $block \DevCms\Entity\ContentEntity */
 $block = $this->block;
 $form = $this->form;
-$this->headTitle('DevCms')->prepend('Content Block Admin')->prepend('Edit "' . $block->label . '"');
+$this->layout('layout/devcms/admin');
+$this->placeholder('DevCms_AdminLayout_Title')->append('Content Block Admin')->append('Edit "' . $block->label . '"');
+$this->HeadTitle('Content Block Admin')->prepend('Edit "' . $block->label . '"');
+
 $form->prepare();
 ?>
-<style>
-	#devcms-wrapper {
-		width: 550px;
-		margin: 0 auto;
-	}
-</style>
-<div id="devcms-wrapper">
-	<a href="<?=$this->url('devcms-admin/content-block/list')?>">&lsaquo; Back to list</a>
-	<h1>DevCms Content Block Edit "<?=$this->escapehtml($block->label)?>"</h1>
+<a href="<?=$this->url('devcms-admin/content-block/list')?>" class="mdl-button mdl-js-button"><i class="material-icons">&#xE314;</i>Back to list</a>
+<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+	<h2>Editing content for "<?=$this->escapehtml($block->label)?>"</h2>
 	<?=$this->form()->openTag($form)?>
-	<?=$this->formrow($form->get('html'),'append')?>
+	WYSIWYG:
+	<?=$this->forminput($form->get('content'))?>
+	<label><?=$form->get('content')->getLabel()?></label>
 	<br />
-	<input type="submit" value="Save" />
+	<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save</button>
 	<?=$this->form()->closeTag($form)?>
 </div>

@@ -1,39 +1,28 @@
 <?php
 $available_blocks = $this->available_blocks;
-
-$this->headTitle('DevCms')->prepend('Content Block Admin');
+$this->layout('layout/devcms/admin');
+$this->placeholder('DevCms_AdminLayout_Title')->append('Content Block Admin');
+$this->HeadTitle('Content Block Admin');
 ?>
-<style>
-	table td,
-	table th {
-		border: 1px solid;
-		padding: 5px;
-	}
-	#devcms-wrapper {
-		width: 550px;
-		margin: 0 auto;
-	}
-</style>
-<div id="devcms-wrapper">
-	<h1>DevCms Content Block List</h1>
 <? if(empty($available_blocks)) { ?>
+<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
 	<p>There are no configured CMS content blocks to edit. Add them in the ZF2 config.</p>
-<? } else { ?>
-	<table>
-		<thead>
-			<tr>
-				<th>Label</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-<?	foreach($available_blocks as $key => $label) { ?>
-			<tr>
-				<td><?=$this->escapehtml($label)?></td>
-				<td><a href="<?=$this->url('devcms-admin/content-block/edit',['id'=>$key])?>">Edit</a></td>
-			</tr>
-<?	} ?>
-		</tbody>
-	</table>
-<? } ?>
 </div>
+<? } else { ?>
+<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width:100%">
+	<thead>
+		<tr>
+			<th class="mdl-data-table__cell--non-numeric">Label</th>
+			<th class="mdl-data-table__cell--non-numeric">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+<?	foreach($available_blocks as $key => $label) { ?>
+		<tr>
+			<td class="mdl-data-table__cell--non-numeric"><?=$this->escapehtml($label)?></td>
+			<td class="mdl-data-table__cell--non-numeric"><a href="<?=$this->url('devcms-admin/content-block/edit',['id'=>$key])?>">Edit</a></td>
+		</tr>
+<?	} ?>
+	</tbody>
+</table>
+<? } ?>
