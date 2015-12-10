@@ -5,8 +5,12 @@ $this->placeholder('DevCms_AdminLayout_Title')->append('Content Block Admin');
 $this->HeadTitle('Content Block Admin');
 ?>
 <? if(empty($available_blocks)) { ?>
-<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-	<p>There are no configured CMS content blocks to edit. Add them in the ZF2 config.</p>
+<div class="mdl-grid mdl-cell--12-col">
+	<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+		<div class="cell-padding">
+			<p>There are no configured CMS content blocks to edit. Add them in the ZF2 config.</p>
+		</div>
+	</div>
 </div>
 <? } else { ?>
 <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width:100%">

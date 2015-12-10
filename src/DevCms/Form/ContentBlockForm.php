@@ -14,6 +14,9 @@ class ContentBlockForm extends Form {
 		$form->add([
 			'name' => 'content',
 			'type' => 'textarea',
+			'attributes' => [
+				'id' => 'f-content',
+			],
 			'options' => [
 				'label' => 'Content',
 			]

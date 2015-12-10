@@ -3,19 +3,32 @@
 $block = $this->block;
 $form = $this->form;
 $this->layout('layout/devcms/admin');
-$this->placeholder('DevCms_AdminLayout_Title')->append('Content Block Admin')->append('Edit "' . $block->label . '"');
+$this->placeholder('DevCms_AdminLayout_Title')->append('Content Block Admin')->append('Edit Block');
 $this->HeadTitle('Content Block Admin')->prepend('Edit "' . $block->label . '"');
 
 $form->prepare();
 ?>
 <a href="<?=$this->url('devcms-admin/content-block/list')?>" class="mdl-button mdl-js-button"><i class="material-icons">&#xE314;</i>Back to list</a>
-<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-	<h2>Editing content for "<?=$this->escapehtml($block->label)?>"</h2>
-	<?=$this->form()->openTag($form)?>
-	WYSIWYG:
-	<?=$this->forminput($form->get('content'))?>
-	<label><?=$form->get('content')->getLabel()?></label>
-	<br />
-	<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save</button>
-	<?=$this->form()->closeTag($form)?>
+<div class="mdl-grid mdl-cell--12-col">
+	<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+		<div class="cell-padding">
+			<h2 class="mdl-typography--display-1"><?=$this->escapehtml($block->label)?></h2>
+			<?=$this->form()->openTag($form)?>
+			<?=$this->formtextarea($form->get('content'))?>
+			<br />
+			<br />
+			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save</button>
+			<?=$this->form()->closeTag($form)?>
+		</div>
+	</div>
 </div>
+<?$this->inlinescript()->appendFile('//cdn.tinymce.com/4/tinymce.min.js')?>
+<?$this->inlinescript()->captureStart()?>
+<script>
+window.onload = function() {
+	tinymce.init({
+		selector: '#<?=$form->get('content')->getAttribute('id')?>'
+	});
+};
+</script>
+<?$this->inlinescript()->captureEnd()?>

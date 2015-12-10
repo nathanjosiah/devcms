@@ -171,3 +171,7 @@ html, body {
       -ms-flex-align: center;
           align-items: center;
 }
+
+.cell-padding {
+	padding: 0 16px 16px 16px;
+}

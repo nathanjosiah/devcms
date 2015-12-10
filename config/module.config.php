@@ -12,6 +12,7 @@ use DevCms\Entity\PageEntity;
 use DevCms\Entity\Hydrator\Strategy\ContentBlocksStrategy;
 use DevCms\Entity\Hydrator\PageEntityHydratorServiceFactory;
 use DevCms\Controller\PageController;
+use DevCms\Controller\AdminHomeController;
 return [
 	'devcms' => [
 		'content_table_name' => 'cms_content',
@@ -61,7 +62,11 @@ return [
 			'devcms-admin' => [
 				'type' => 'Literal',
 				'options' => [
-					'route' => '/devcms-admin'
+					'route' => '/devcms-admin',
+					'defaults' => [
+						'controller' => 'DevCms\Controller\AdminHomeController',
+						'action' => 'index'
+					]
 				],
 				'may_terminate' => true,
 				'child_routes' => [
@@ -101,11 +106,13 @@ return [
 	'controllers' => [
 		'invokables' => [
 			'DevCms\Controller\ContentBlockAdminController' => ContentBlockAdminController::class,
+			'DevCms\Controller\AdminHomeController' => AdminHomeController::class,
 			'DevCms\Controller\PageController' => PageController::class,
 		]
 	],
 	'view_manager' => [
 		'template_map' => [
+			'devcms/admin/home' => __DIR__ . '/../view/pages/admin-home.phtml',
 			'devcms/admin/content-block/list' => __DIR__ . '/../view/pages/content-block-admin/list.phtml',
 			'devcms/admin/content-block/edit' => __DIR__ . '/../view/pages/content-block-admin/edit.phtml',
 			'layout/devcms/admin' => __DIR__ . '/../view/templates/admin-layout.phtml',
