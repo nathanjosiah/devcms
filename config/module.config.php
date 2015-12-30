@@ -13,6 +13,8 @@ use DevCms\Entity\Hydrator\Strategy\ContentBlocksStrategy;
 use DevCms\Entity\Hydrator\PageEntityHydratorServiceFactory;
 use DevCms\Controller\PageController;
 use DevCms\Controller\AdminHomeController;
+use DevCms\Controller\PageAdminController;
+use DevCms\Form\PageFormFactory;
 return [
 	'devcms' => [
 		'content_table_name' => 'cms_content',
@@ -36,7 +38,6 @@ return [
 				'label' => 'Other thang'
 			]
 		],
-		/*
 		'layouts' => [
 			'my-foo-bar' => [
 				'label' => 'Two Column Layout',
@@ -55,7 +56,7 @@ return [
 					]
 				]
 			]
-		]*/
+		]
 	],
 	'router' => [
 		'routes' => [
@@ -98,6 +99,35 @@ return [
 								]
 							]
 						]
+					],
+					'page' => [
+						'type' => 'Literal',
+						'options' => [
+							'route' => '/page'
+						],
+						'may_terminate' => true,
+						'child_routes' => [
+							'list' => [
+								'type' => 'Literal',
+								'options' => [
+									'route' => '/list',
+									'defaults' => [
+										'controller' => 'DevCms\Controller\PageAdminController',
+										'action' => 'list'
+									]
+								]
+							],
+							'edit' => [
+								'type' => 'Segment',
+								'options' => [
+									'route' => '/edit/:id',
+									'defaults' => [
+										'controller' => 'DevCms\Controller\PageAdminController',
+										'action' => 'edit'
+									]
+								]
+							]
+						]
 					]
 				]
 			]
@@ -106,6 +136,7 @@ return [
 	'controllers' => [
 		'invokables' => [
 			'DevCms\Controller\ContentBlockAdminController' => ContentBlockAdminController::class,
+			'DevCms\Controller\PageAdminController' => PageAdminController::class,
 			'DevCms\Controller\AdminHomeController' => AdminHomeController::class,
 			'DevCms\Controller\PageController' => PageController::class,
 		]
@@ -115,6 +146,8 @@ return [
 			'devcms/admin/home' => __DIR__ . '/../view/pages/admin-home.phtml',
 			'devcms/admin/content-block/list' => __DIR__ . '/../view/pages/content-block-admin/list.phtml',
 			'devcms/admin/content-block/edit' => __DIR__ . '/../view/pages/content-block-admin/edit.phtml',
+			'devcms/admin/page/list' => __DIR__ . '/../view/pages/page-admin/list.phtml',
+			'devcms/admin/page/edit' => __DIR__ . '/../view/pages/page-admin/edit.phtml',
 			'layout/devcms/admin' => __DIR__ . '/../view/templates/admin-layout.phtml',
 		]
 	],
@@ -132,6 +165,7 @@ return [
 			'DevCms\Entity\Hydrator\PageEntityHydrator' => PageEntityHydratorServiceFactory::class,
 			'DevCms\Cache\ContentCache' => ContentCacheServiceFactory::class,
 			'DevCms\DefaultListener' => DefaultListenerServiceFactory::class,
+			'DevCms\Form\PageFormFactory' => PageFormFactory::class,
 		]
 	],
 	'view_helpers' => [

@@ -16,8 +16,8 @@ class ContentBlocksStrategy implements StrategyInterface {
 		if(empty($value)) return [];
 
 		$ids = [];
-		foreach($value as $block) {
-			$ids[] = $block->id;
+		foreach($value as $key => $block) {
+			$ids[$key] = $block->id;
 			$this->contentBlocksTable->setContent($block->id,$block->content);
 		}
 		return json_encode($ids);
@@ -27,7 +27,11 @@ class ContentBlocksStrategy implements StrategyInterface {
 		if(empty($value)) return [];
 		if(is_string($value)) $value = json_decode($value,true);
 
-		$blocks = $this->contentBlocksTable->fetchWithIds($value);
+		$rows = $this->contentBlocksTable->fetchWithIds(array_values($value));
+		$blocks = [];
+		foreach($rows as $row) {
+			$blocks[array_search($row->id,$value)] = $row;
+		}
 		return $blocks;
 	}
 }

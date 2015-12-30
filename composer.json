@@ -3,8 +3,15 @@
   "version" : "0.0.1",
   "require" : {
     "php": ">=5.5",
-    "zendframework/zendframework" : "=2.4.8"
+    "zendframework/zendframework" : "=2.4.8",
+    "nathanjosiah/zf2-cg": "dev-master"
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url":"../cg"
+    }
+  ],
   "license": "MIT",
     "authors": [
         {

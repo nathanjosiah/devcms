@@ -28,8 +28,6 @@ class PageController extends AbstractController {
 				$vm->setVariable($content_block->id,$content_block->content);
 			}
 		}
-var_dump($vm);
-exit();
 		$e->setResult($vm);
 		return $vm;
 	}

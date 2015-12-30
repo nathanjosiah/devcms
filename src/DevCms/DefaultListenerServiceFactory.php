@@ -16,7 +16,7 @@ class DefaultListenerServiceFactory implements ListenerAggregateInterface,Factor
 		$route_plugin_manager = $router->getRoutePluginManager();
 		$route_plugin_manager->setInvokableClass('CmsPage','DevCms\Router\Plugin\Page');
 		$route_plugin_manager->addDelegator('CmsPage','DevCms\Router\Plugin\PageServiceDelegator');
-		$router->addRoute('cms_page',[
+		$router->addRoute('devcms_page',[
 			'type' => 'CmsPage',
 			'options' => [
 				'route' => '/content/:page_id',

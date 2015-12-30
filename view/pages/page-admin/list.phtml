@@ -1,0 +1,37 @@
+<?php
+/* @var $pages \DevCms\Entity\PageEntity[] */
+$pages = $this->pages;
+$this->layout('layout/devcms/admin');
+$this->placeholder('DevCms_AdminLayout_Title')->append('Page Administration');
+$this->HeadTitle('Page Administration');
+?>
+<? if(empty($pages)) { ?>
+<div class="mdl-grid mdl-cell--12-col">
+	<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+		<div class="cell-padding">
+			<p>There are no configured CMS pages to edit. Add them in the ZF2 config.</p>
+		</div>
+	</div>
+</div>
+<? } else { ?>
+<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width:100%">
+	<thead>
+		<tr>
+			<th class="mdl-data-table__cell--non-numeric">Label</th>
+			<th class="mdl-data-table__cell--non-numeric">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+<?	foreach($pages as $page) { ?>
+		<tr>
+			<td class="mdl-data-table__cell--non-numeric"><?=$this->escapehtml($page->id)?></td>
+			<td class="mdl-data-table__cell--non-numeric">
+				<a href="<?=$this->url('devcms-admin/page/edit',['id'=>$page->id])?>">Edit</a>
+				<br />
+				<a href="<?=$this->url('devcms_page',['page_id'=>$page->id])?>">View</a>
+			</td>
+		</tr>
+<?	} ?>
+	</tbody>
+</table>
+<? } ?>
