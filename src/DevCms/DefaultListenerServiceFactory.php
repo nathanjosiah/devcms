@@ -12,6 +12,9 @@ class DefaultListenerServiceFactory implements ListenerAggregateInterface,Factor
 		// config is merged into the router. This means that dynamically added routes, or routes with custom plugins
 		// must be added through this fairly hacky way by way of a default listener that is obtained through a ServiceManager factory.
 		// Even then, it is only made possible because the factory interface requires a ServiceLocator to be injected.
+		/**
+		 * @var \Zend\Mvc\Router\RouteStackInterface $router
+		 */
 		$router = $serviceLocator->get('Router');
 		$route_plugin_manager = $router->getRoutePluginManager();
 		$route_plugin_manager->setInvokableClass('CmsPage','DevCms\Router\Plugin\Page');
@@ -27,7 +30,7 @@ class DefaultListenerServiceFactory implements ListenerAggregateInterface,Factor
 					'controller' => 'DevCms\Controller\PageController'
 				]
 			]
-		]);
+		],1000);
 		return $this;
 	}
 

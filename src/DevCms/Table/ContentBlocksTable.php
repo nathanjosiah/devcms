@@ -33,7 +33,7 @@ class ContentBlocksTable extends TableGateway{
 			$this->update(['content'=>$content],['id'=>$id]);
 		}
 		else {
-			$this->insert(['content'=>$content]);
+			$this->insert(['content'=>$content,'id'=>$id]);
 		}
 		return $this;
 	}

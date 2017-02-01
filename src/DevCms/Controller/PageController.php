@@ -23,9 +23,13 @@ class PageController extends AbstractController {
 			$vm->setTemplate($page->template);
 		}
 
+		if($page->layout) {
+			$this->Layout($page->layout);
+		}
+
 		if(!empty($page->variables)) {
-			foreach($page->variables as $content_block) {
-				$vm->setVariable($content_block->id,$content_block->content);
+			foreach($page->variables as $key => $content_block) {
+				$vm->setVariable($key,$content_block->content);
 			}
 		}
 		$e->setResult($vm);

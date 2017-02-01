@@ -21,10 +21,8 @@ return [
 		'pages_table_name' => 'cms_pages',
 		'cache_storage' => [
 			// Set to blackhole to disable cache
-			'adapter' => 'filesystem',
+			'adapter' => 'blackhole',
 			'options' => [
-				'ttl' => 1,
-				'cache_dir' => __DIR__ . '/../data/'
 			]
 		],
 		// May be normal filter names or normal SM keys.

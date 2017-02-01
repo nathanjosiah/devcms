@@ -10,7 +10,7 @@ class ContentRenderer {
 		$this->filterChain = $filter_chain;
 	}
 	public function render(ContentEntity $content) {
-		$filtered = $this->filterChain->filter($content->html);
+		$filtered = $this->filterChain->filter($content->content);
 		return $filtered;
 	}
 }

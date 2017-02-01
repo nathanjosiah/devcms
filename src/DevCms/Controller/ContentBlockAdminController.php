@@ -46,12 +46,12 @@ class ContentBlockAdminController extends AbstractActionController {
 		$form = ContentBlockForm::fromConfig($block_config);
 
 		$request = $this->getRequest();
-		$form->setAttribute('action',$this->url()->fromRoute('devcms-admin/content-block/edit',['id'=>$id]));
+		$form->setAttribute('action',$this->Url()->fromRoute('devcms-admin/content-block/edit',['id'=>$id]));
 		if($request->isPost()) {
 			$form->setData($request->getPost());
 			if($form->isValid()) {
 				$content_block_table->setContent($id,$form->getInputFilter()->getValue('content'));
-				return $this->redirect()->toRoute('devcms-admin/content-block/list');
+				return $this->Redirect()->toRoute('devcms-admin/content-block/list');
 			}
 		}
 		else {
