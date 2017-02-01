@@ -13,7 +13,7 @@ class PageController extends AbstractController {
 		$page = $route_match->getParam('page');
 
 		if($page->viewModelKey) {
-			$vm = $this->getServiceLocator()->get($page->viewModelKey);
+			$vm = $this->serviceLocator->get($page->viewModelKey);
 		}
 		else {
 			$vm = new ViewModel();
@@ -24,7 +24,11 @@ class PageController extends AbstractController {
 		}
 
 		if($page->layout) {
-			$this->Layout($page->layout);
+			$devcms_config = $this->serviceLocator->get('Config')['devcms'];
+			$layout_config = $devcms_config['layouts'][$page->layout];
+			if(!empty($layout_config['template'])) {
+				$this->Layout($layout_config['template']);
+			}
 		}
 
 		if(!empty($page->variables)) {

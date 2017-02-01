@@ -1,8 +1,8 @@
 <?php
 /* @var $pages \DevCms\Entity\PageEntity[] */
 $pages = $this->pages;
-$this->layout('layout/devcms/admin');
-$this->placeholder('DevCms_AdminLayout_Title')->append('Page Administration');
+$this->Layout('layout/devcms/admin');
+$this->Placeholder('DevCms_AdminLayout_Title')->append('Page Administration');
 $this->HeadTitle('Page Administration');
 ?>
 <? if(empty($pages)) { ?>
@@ -24,11 +24,11 @@ $this->HeadTitle('Page Administration');
 	<tbody>
 <?	foreach($pages as $page) { ?>
 		<tr>
-			<td class="mdl-data-table__cell--non-numeric"><?=$this->escapehtml($page->id)?></td>
+			<td class="mdl-data-table__cell--non-numeric"><?=$this->EscapeHtml($page->label)?></td>
 			<td class="mdl-data-table__cell--non-numeric">
-				<a href="<?=$this->url('devcms-admin/page/edit',['id'=>$page->id])?>">Edit</a>
-				<br />
-				<a href="<?=$this->url('devcms_page',['page_id'=>$page->id])?>">View</a>
+				<a href="<?=$this->Url('devcms-admin/page/edit',['id'=>$page->id])?>">Edit</a>
+				|
+				<a href="<?=$this->Url('devcms_page',['page_id'=>$page->id])?>">View</a>
 			</td>
 		</tr>
 <?	} ?>

@@ -5,8 +5,8 @@ $page = $this->page;
 /* @var $form \Zend\Form\Form */
 $form = $this->form;
 
-$this->layout('layout/devcms/admin');
-$this->placeholder('DevCms_AdminLayout_Title')->append('Page Admin')->append('Edit Page');
+$this->Layout('layout/devcms/admin');
+$this->Placeholder('DevCms_AdminLayout_Title')->append('Page Admin')->append('Edit Page');
 $this->HeadTitle('Page Admin')->prepend('Edit "' . $page->label . '"');
 
 $form->prepare();
@@ -15,13 +15,15 @@ $form->prepare();
 <div class="mdl-grid mdl-cell--12-col">
 	<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
 		<div class="cell-padding">
-			<h2 class="mdl-typography--display-1"><?=$this->escapehtml($page->label)?></h2>
-			<?=$this->form()->openTag($form)?>
-			<?var_dump($form)?>
+			<h2 class="mdl-typography--display-1"><?=$this->EscapeHtml($page->label)?></h2>
+			<?=$this->Form()->openTag($form)?>
+<? foreach($form->get('vars')->getElements() as $element) {?>
+			<?=$this->TinyMceElement($element)?>
+<? } ?>
 			<br />
 			<br />
 			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save</button>
-			<?=$this->form()->closeTag($form)?>
+			<?=$this->Form()->closeTag($form)?>
 		</div>
 	</div>
 </div>

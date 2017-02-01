@@ -39,8 +39,7 @@ return [
 		'layouts' => [
 			'my-foo-bar' => [
 				'label' => 'Two Column Layout',
-				// option a: 'template' => 'partial/cms/my-template',
-				// option b: 'view_model' => 'service-manager-key',
+				'template' => 'layout/landing-page',
 				'variables' => [
 					[
 						'name' => 'left-col',
@@ -49,7 +48,7 @@ return [
 					],
 					[
 						'name' => 'right-col',
-						'label' => 'Left Column',
+						'label' => 'Right Column',
 						'required' => false
 					]
 				]
