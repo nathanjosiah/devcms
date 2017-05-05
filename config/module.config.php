@@ -46,19 +46,52 @@ return [
 				'layouts' => ['foo-bar']
 			],
 		],
+		'variable_types' => [
+			'checkbox' => [
+				'element' => 'Checkbox',
+				// Optional
+				// 'hydrator' => 'ObjectProperty',
+				'hydration_strategy' => 'DevCms\Model\Variable\Hydrator\Strategy\Default',
+				'input_filter' => [
+					// This can either be element_spec, options, or service_locator_key
+					'options' => [
+						'filters' => [
+							['name' => 'StringTrim'],
+							['name' => 'ToInt'],
+						]
+					],
+				],
+			],
+			'textarea' => [
+				'element' => 'Textarea',
+				'hydration_strategy' => 'DevCms\Model\Variable\Hydrator\Strategy\Default',
+				'input_filter' => [
+					'options' => [
+						'filters' => [
+							['name' => 'StringTrim'],
+						]
+					],
+				],
+			],
+		],
 		'layouts' => [
 			'my-foo-bar' => [
 				'label' => 'Two Column Layout',
 				'layout' => 'layout/landing-page',
 				'template' => 'partial/my-cms-template',
 				'variables' => [
-					[
-						'name' => 'leftCol',
+					'isThing' => [
+						'type' => 'checkbox',
+						'label' => 'Is a thing?',
+						'required' => true
+					],
+					'leftCol' => [
+						'type' => 'textarea',
 						'label' => 'Left Column',
 						'required' => true
 					],
-					[
-						'name' => 'rightCol',
+					'rightCol' => [
+						'type' => 'textarea',
 						'label' => 'Right Column',
 						'required' => false
 					]
@@ -69,18 +102,15 @@ return [
 				'layout' => 'layout/landing-page',
 				'template' => 'partial/my-cms-template-configurable',
 				'variables' => [
-					[
-						'name' => 'header',
+					'header' => [
 						'label' => 'Header thing',
 						'required' => true
 					],
-					[
-						'name' => 'leftCol',
+					'leftCol' => [
 						'label' => 'Left Column',
 						'required' => true
 					],
-					[
-						'name' => 'rightCol',
+					'rightCol' => [
 						'label' => 'Right Column',
 						'required' => false
 					]
@@ -197,6 +227,7 @@ return [
 			'DevCms\Entity\ContentEntity' => ContentEntity::class,
 			'DevCms\Entity\PageEntity' => PageEntity::class,
 			'DevCms\Entity\Hydrator\Strategy\ContentBlocksStrategy' => ContentBlocksStrategy::class,
+			'DevCms\Model\Variable\Hydrator\Strategy\Default' => \Zend\Stdlib\Hydrator\Strategy\DefaultStrategy::class,
 		],
 		'factories' => [
 			'DevCms\Renderer\ContentRenderer' => ContentRendererServiceFactory::class,

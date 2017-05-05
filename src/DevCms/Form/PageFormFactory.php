@@ -83,24 +83,28 @@ class PageFormFactory implements FactoryInterface {
 		$vars_fs = $form->get('vars');
 		$vars_if = $form->getInputFilter()->get('vars');
 
-		foreach($devcms_config['layouts'][$id]['variables'] as $var) {
-			$var_fieldset = new Fieldset($var['name']);
+		foreach($devcms_config['layouts'][$id]['variables'] as $var_name => $var) {
+			$var_fieldset = new Fieldset($var_name);
 			$var_if = new InputFilter();
+
+			$type_config = $devcms_config['variable_types'][$var['type']];
 
 			$var_fieldset->add([
 				'name' => 'content',
-				'type' => 'textarea',
+				'type' => $type_config['element'],
 				'attributes' => [
-					'id' => 'f-' . $var['name'],
+					'id' => 'f-' . $var_name,
 				],
 				'options' => [
 					'label' => $var['label']
 				]
 			]);
-			$var_if->add([
-				'name' => 'content',
-				'required' => $var['required']
-			]);
+
+			$if_spec = $type_config['input_filter']['options'];
+			$if_spec['name'] = 'content';
+			$if_spec['required'] = $var['required'];
+			$var_if->add($if_spec);
+
 			$var_fieldset->add([
 				'name' => 'id',
 				'type' => 'hidden',
@@ -111,7 +115,7 @@ class PageFormFactory implements FactoryInterface {
 			]);
 
 			$vars_fs->add($var_fieldset);
-			$vars_if->add($var_if,$var['name']);
+			$vars_if->add($var_if,$var_name);
 		}
 
 		return $form;

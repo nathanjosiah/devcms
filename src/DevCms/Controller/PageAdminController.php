@@ -52,18 +52,25 @@ class PageAdminController extends AbstractActionController {
 		}
 
 		$factory = $this->serviceLocator->get('DevCms\Form\PageFormFactory');
-		$form = $factory->createWithLayoutId($this->request->getQuery('layout',$page->layout));
+		$layout = $this->request->getQuery('layout',$page->layout);
+		$form = $factory->createWithLayoutId($layout);
 
 		if($this->request->isPost()) {
 			$this->processForm($form,$page);
 		}
 		else {
+			$devcms_config = $this->serviceLocator->get('Config')['devcms'];
+
 			$form->get('slug')->setValue($page->slug);
 			$form->get('label')->setValue($page->label);
 			$fvars = $form->get('vars');
 			foreach($page->variables as $var_name => $variable) {
+				$type_config = $devcms_config['variable_types'][$devcms_config['layouts'][$layout]['variables'][$var_name]['type']];
+
 				if($fvars->has($var_name)) {
-					$fvars->get($var_name)->get('content')->setValue($variable->content);
+					$hydrator = $this->serviceLocator->get($type_config['hydration_strategy']);
+					$content_field = $fvars->get($var_name)->get('content');
+					$content_field->setValue($hydrator->hydrate($variable->content));
 					$fvars->get($var_name)->get('id')->setValue($variable->id);
 				}
 			}
@@ -85,12 +92,16 @@ class PageAdminController extends AbstractActionController {
 		$page->label = $data['label'];
 		$page->layout = $data['layout'];
 		$vars = [];
+		$devcms_config = $this->serviceLocator->get('Config')['devcms'];
 		foreach($data['vars'] as $var_name => $var_data) {
 			$var = new ContentEntity();
 			if(isset($var_data['id'])) {
 				$var->id = $var_data['id'];
 			}
-			$var->content = $var_data['content'];
+
+			$type_config = $devcms_config['variable_types'][$devcms_config['layouts'][$page->layout]['variables'][$var_name]['type']];
+			$hydrator = $this->serviceLocator->get($type_config['hydration_strategy']);
+			$var->content = $hydrator->extract($var_data['content']);
 			$vars[$var_name] = $var;
 		}
 		$page->variables = $vars;
