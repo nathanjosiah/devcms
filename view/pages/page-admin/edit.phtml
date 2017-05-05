@@ -15,10 +15,17 @@ $form->prepare();
 <div class="mdl-grid mdl-cell--12-col">
 	<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
 		<div class="cell-padding">
-			<h2 class="mdl-typography--display-1"><?=$this->EscapeHtml($page->label)?></h2>
 			<?=$this->Form()->openTag($form)?>
+				<div>
+					<?=$this->FormRow($form->get('label'))?>
+				</div>
+				<div>
+					<?=$this->FormRow($form->get('layout'))?>
+				</div>
 <? foreach($form->get('vars')->getElements() as $element) {?>
-			<?=$this->TinyMceElement($element)?>
+				<div>
+					<?=$this->FormRow($element)?>
+				</div>
 <? } ?>
 			<br />
 			<br />

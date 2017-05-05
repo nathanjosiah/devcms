@@ -4,7 +4,6 @@ namespace DevCms\Form;
 
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\Input;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 class PageFormFactory implements FactoryInterface {
@@ -27,9 +26,45 @@ class PageFormFactory implements FactoryInterface {
 
 		$form = new PageForm();
 
+		$if = $form->getInputFilter();
+
+		$form->add([
+			'name' => 'label',
+			'options' => [
+				'label' => 'Page label',
+			]
+		]);
+		$if->add(['name' => 'label']);
+
+
+		$layouts = [];
+		foreach($devcms_config['layout_categories'] as $category) {
+			$tmp = [];
+			foreach($category['layouts'] as $layout_id) {
+				$tmp[$layout_id] = $devcms_config['layouts'][$layout_id]['label'];
+			}
+			$layouts[] = [
+				'label' => $category['label'],
+				'options' => $tmp,
+			];
+		}
+
+		$form->add([
+			'name' => 'layout',
+			'type' => 'Select',
+			'attributes' => [
+				'value' => $id,
+			],
+			'options' => [
+				'label' => 'Layout',
+				'value_options' => $layouts,
+				'empty_option' => 'Please select',
+			]
+		]);
+		$if->add(['name' => 'layout']);
+
 		$var_fs = new Fieldset('vars');
 		$var_if = new InputFilter();
-		$if = $form->getInputFilter();
 		foreach($devcms_config['layouts'][$id]['variables'] as $var) {
 			$var_fs->add([
 				'name' => $var['name'],
@@ -41,11 +76,10 @@ class PageFormFactory implements FactoryInterface {
 					'label' => $var['label']
 				]
 			]);
-			if(!$var['required']) {
-				$input = new Input($var['name']);
-				$input->setRequired(false);
-				$var_if->add($input);
-			}
+			$var_if->add([
+				'name' => $var['name'],
+				'required' => $var['required']
+			]);
 		}
 		$form->add($var_fs);
 		$if->add($var_if,'vars');

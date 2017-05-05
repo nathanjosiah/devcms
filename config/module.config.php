@@ -36,18 +36,51 @@ return [
 				'label' => 'Other thang'
 			]
 		],
+		'layout_categories' => [
+			[
+				'label' => 'Landing Pages',
+				'layouts' => ['my-foo-bar','foo-bar']
+			],
+			[
+				'label' => 'Regular Pages',
+				'layouts' => ['foo-bar']
+			],
+		],
 		'layouts' => [
 			'my-foo-bar' => [
 				'label' => 'Two Column Layout',
-				'template' => 'layout/landing-page',
+				'layout' => 'layout/landing-page',
+				'template' => 'partial/my-cms-template',
 				'variables' => [
 					[
-						'name' => 'left-col',
+						'name' => 'leftCol',
 						'label' => 'Left Column',
 						'required' => true
 					],
 					[
-						'name' => 'right-col',
+						'name' => 'rightCol',
+						'label' => 'Right Column',
+						'required' => false
+					]
+				]
+			],
+			'foo-bar' => [
+				'label' => 'Three Column Layout - editable header',
+				'layout' => 'layout/landing-page',
+				'template' => 'partial/my-cms-template-configurable',
+				'variables' => [
+					[
+						'name' => 'header',
+						'label' => 'Header thing',
+						'required' => true
+					],
+					[
+						'name' => 'leftCol',
+						'label' => 'Left Column',
+						'required' => true
+					],
+					[
+						'name' => 'rightCol',
 						'label' => 'Right Column',
 						'required' => false
 					]

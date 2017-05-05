@@ -19,17 +19,18 @@ class PageController extends AbstractController {
 			$vm = new ViewModel();
 		}
 
-		if($page->template) {
-			$vm->setTemplate($page->template);
-		}
-
 		if($page->layout) {
 			$devcms_config = $this->serviceLocator->get('Config')['devcms'];
 			$layout_config = $devcms_config['layouts'][$page->layout];
+			if(!empty($layout_config['layout'])) {
+				$this->Layout($layout_config['layout']);
+			}
+
 			if(!empty($layout_config['template'])) {
-				$this->Layout($layout_config['template']);
+				$vm->setTemplate($layout_config['template']);
 			}
 		}
+
 
 		if(!empty($page->variables)) {
 			foreach($page->variables as $key => $content_block) {
