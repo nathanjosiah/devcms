@@ -156,7 +156,17 @@ return [
 										'action' => 'edit'
 									]
 								]
-							]
+							],
+							'create' => [
+								'type' => 'Segment',
+								'options' => [
+									'route' => '/create',
+									'defaults' => [
+										'controller' => 'DevCms\Controller\PageAdminController',
+										'action' => 'create'
+									]
+								]
+							],
 						]
 					]
 				]

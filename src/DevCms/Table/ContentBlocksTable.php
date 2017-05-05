@@ -3,13 +3,20 @@
 namespace DevCms\Table;
 
 use Zend\Db\TableGateway\TableGateway;
-class ContentBlocksTable extends TableGateway{
+
+class ContentBlocksTable {
+	private $tableGateway;
+
+	public function __construct(TableGateway $table_gateway) {
+		$this->tableGateway = $table_gateway;
+	}
+
 	/**
 	 * @param string $id
 	 * @return \DevCms\Entity\ContentEntity
 	 */
 	public function fetchWithId($id) {
-		$result = $this->select(['id'=>$id]);
+		$result = $this->tableGateway->select(['id'=>$id]);
 		return $result->current();
 	}
 
@@ -18,10 +25,15 @@ class ContentBlocksTable extends TableGateway{
 	 * @return \DevCms\Entity\ContentEntity[]
 	 */
 	public function fetchWithIds(array $ids) {
-		$select = $this->getSql()->select();
+		$select = $this->tableGateway->getSql()->select();
 		$select->where->in('id',$ids);
-		$result = $this->selectWith($select);
+		$result = $this->tableGateway->selectWith($select);
 		return $result;
+	}
+
+	public function createContent($content) {
+		$this->tableGateway->insert(['content'=>$content]);
+		return $this->tableGateway->getLastInsertValue();
 	}
 
 	/**
@@ -30,10 +42,10 @@ class ContentBlocksTable extends TableGateway{
 	 */
 	public function setContent($id,$content) {
 		if($this->fetchWithId($id)) {
-			$this->update(['content'=>$content],['id'=>$id]);
+			$this->tableGateway->update(['content'=>$content],['id'=>$id]);
 		}
 		else {
-			$this->insert(['content'=>$content,'id'=>$id]);
+			$this->tableGateway->insert(['content'=>$content]);
 		}
 		return $this;
 	}

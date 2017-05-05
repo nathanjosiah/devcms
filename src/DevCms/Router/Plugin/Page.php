@@ -15,9 +15,9 @@ class Page extends Segment {
 			return null;
 		}
 
-		$page_key = $match->getParam('page_id');
+		$page_slug = $match->getParam('page_slug');
 
-		$page = $this->pagesTable->fetchWithId($page_key);
+		$page = $this->pagesTable->fetchWithSlug($page_slug);
 
 		if(!$page) {
 			return null;

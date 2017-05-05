@@ -5,11 +5,11 @@ $this->Layout('layout/devcms/admin');
 $this->Placeholder('DevCms_AdminLayout_Title')->append('Page Administration');
 $this->HeadTitle('Page Administration');
 ?>
-<? if(empty($pages)) { ?>
+<? if(count($pages) === 0) { ?>
 <div class="mdl-grid mdl-cell--12-col">
 	<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
 		<div class="cell-padding">
-			<p>There are no configured CMS pages to edit. Add them in the ZF2 config.</p>
+			<p>There are currently no CMS pages.</p>
 		</div>
 	</div>
 </div>
@@ -28,10 +28,15 @@ $this->HeadTitle('Page Administration');
 			<td class="mdl-data-table__cell--non-numeric">
 				<a href="<?=$this->Url('devcms-admin/page/edit',['id'=>$page->id])?>">Edit</a>
 				|
-				<a href="<?=$this->Url('devcms_page',['page_id'=>$page->id])?>">View</a>
+				<a href="<?=$this->Url('devcms_page',['page_slug'=>$page->slug])?>">View</a>
 			</td>
 		</tr>
 <?	} ?>
 	</tbody>
 </table>
 <? } ?>
+<div class="fixed-in-corner">
+	<a href="<?=$this->Url('devcms-admin/page/create')?>" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
+		<i class="material-icons">add</i>
+	</a>
+</div>

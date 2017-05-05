@@ -5,6 +5,7 @@ namespace DevCms\Table;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
+use Zend\Db\TableGateway\TableGateway;
 
 class ContentBlocksTableServiceFactory implements FactoryInterface {
 
@@ -14,7 +15,8 @@ class ContentBlocksTableServiceFactory implements FactoryInterface {
 		$adapter = $serviceLocator->get('Zend\Db\Adapter\Adapter');
 		$table_name = $serviceLocator->get('config')['devcms']['content_table_name'];
 		$result_set = new HydratingResultSet($hydrator,$entity);
-		$table = new ContentBlocksTable($table_name,$adapter,null,$result_set);
+		$table_gateway = new TableGateway($table_name,$adapter,null,$result_set);
+		$table = new ContentBlocksTable($table_gateway);
 		return $table;
 	}
 }

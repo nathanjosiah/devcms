@@ -4,7 +4,7 @@ $this->layout('layout/devcms/admin');
 $this->placeholder('DevCms_AdminLayout_Title')->append('Content Block Admin');
 $this->HeadTitle('Content Block Admin');
 ?>
-<? if(empty($available_blocks)) { ?>
+<? if(count($available_blocks) === 0) { ?>
 <div class="mdl-grid mdl-cell--12-col">
 	<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
 		<div class="cell-padding">

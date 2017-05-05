@@ -17,8 +17,13 @@ class ContentBlocksStrategy implements StrategyInterface {
 
 		$ids = [];
 		foreach($value as $key => $block) {
+			if($block->id) {
+				$this->contentBlocksTable->setContent($block->id,$block->content);
+			}
+			else {
+				$block->id = $this->contentBlocksTable->createContent($block->content);
+			}
 			$ids[$key] = $block->id;
-			$this->contentBlocksTable->setContent($block->id,$block->content);
 		}
 		return json_encode($ids);
 	}

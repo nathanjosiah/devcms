@@ -3,7 +3,7 @@
 namespace DevCms\Entity;
 
 class PageEntity {
-	public $id,$viewModelKey,$label,$layout;
+	public $id,$slug,$label,$layout;
 
 	/**
 	 * @var \DevCms\Entity\ContentEntity[]

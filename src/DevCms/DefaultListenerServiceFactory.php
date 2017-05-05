@@ -22,9 +22,9 @@ class DefaultListenerServiceFactory implements ListenerAggregateInterface,Factor
 		$router->addRoute('devcms_page',[
 			'type' => 'CmsPage',
 			'options' => [
-				'route' => '/content/:page_id',
+				'route' => '/content/:page_slug',
 				'constraints' => [
-					'page_id' => '[a-zA-Z0-9][a-zA-Z0-9-]+'
+					'page_slug' => '[a-zA-Z0-9][a-zA-Z0-9-]+'
 				],
 				'defaults' => [
 					'controller' => 'DevCms\Controller\PageController'

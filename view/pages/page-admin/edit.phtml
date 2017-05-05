@@ -11,7 +11,7 @@ $this->HeadTitle('Page Admin')->prepend('Edit "' . $page->label . '"');
 
 $form->prepare();
 ?>
-<a href="<?=$this->url('devcms-admin/page/list')?>" class="mdl-button mdl-js-button"><i class="material-icons">&#xE314;</i>Back to list</a>
+<a href="<?=$this->Url('devcms-admin/page/list')?>" class="mdl-button mdl-js-button"><i class="material-icons">&#xE314;</i>Back to list</a>
 <div class="mdl-grid mdl-cell--12-col">
 	<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
 		<div class="cell-padding">
@@ -20,11 +20,15 @@ $form->prepare();
 					<?=$this->FormRow($form->get('label'))?>
 				</div>
 				<div>
+					<?=$this->FormRow($form->get('slug'))?>
+				</div>
+				<div>
 					<?=$this->FormRow($form->get('layout'))?>
 				</div>
-<? foreach($form->get('vars')->getElements() as $element) {?>
+<? foreach($form->get('vars')->getFieldsets() as $element) {?>
 				<div>
-					<?=$this->FormRow($element)?>
+					<?=$this->FormRow($element->get('id'))?>
+					<?=$this->FormRow($element->get('content'))?>
 				</div>
 <? } ?>
 			<br />
