@@ -4,13 +4,15 @@ namespace DevCms\Form;
 
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilter;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-class PageFormFactory implements FactoryInterface {
+use DevCms\Model\Variable\Form\Factory;
 
-	protected $serviceLocator;
-	public function createService(ServiceLocatorInterface $serviceLocator) {
-		$this->serviceLocator = $serviceLocator;
+class PageFormFactory {
+	protected $devcmsConfig,$variableFormFactory;
+
+
+	public function __construct(Factory $variableFormFactory,array $devcms_config) {
+		$this->variableFormFactory = $variableFormFactory;
+		$this->devcmsConfig = $devcms_config;
 		return $this;
 	}
 
@@ -33,13 +35,12 @@ class PageFormFactory implements FactoryInterface {
 		]);
 		$if->add(['name' => 'label']);
 
-		$devcms_config = $this->serviceLocator->get('Config')['devcms'];
 
 		$layouts = [];
-		foreach($devcms_config['layout_categories'] as $category) {
+		foreach($this->devcmsConfig['layout_categories'] as $category) {
 			$tmp = [];
 			foreach($category['layouts'] as $layout_id) {
-				$tmp[$layout_id] = $devcms_config['layouts'][$layout_id]['label'];
+				$tmp[$layout_id] = $this->devcmsConfig['layouts'][$layout_id]['label'];
 			}
 			$layouts[] = [
 				'label' => $category['label'],
@@ -84,38 +85,10 @@ class PageFormFactory implements FactoryInterface {
 		$vars_if = $form->getInputFilter()->get('vars');
 
 		foreach($devcms_config['layouts'][$id]['variables'] as $var_name => $var) {
-			$var_fieldset = new Fieldset($var_name);
-			$var_if = new InputFilter();
-
-			$type_config = $devcms_config['variable_types'][$var['type']];
-
-			$var_fieldset->add([
-				'name' => 'content',
-				'type' => $type_config['element'],
-				'attributes' => [
-					'id' => 'f-' . $var_name,
-				],
-				'options' => [
-					'label' => $var['label'],
-					'__partial__' => $type_config['partial'],
-				]
-			]);
-
-			$if_spec = $type_config['input_filter']['options'];
-			$if_spec['name'] = 'content';
-			$if_spec['required'] = $var['required'];
-			$var_if->add($if_spec);
-
-			$var_fieldset->add([
-				'name' => 'id',
-				'type' => 'hidden',
-			]);
-			$var_if->add([
-				'name' => 'id',
-				'required' => false,
-			]);
-
+			$var_fieldset = $this->variableFormFactory->createElement($var_name,$var);
 			$vars_fs->add($var_fieldset);
+
+			$var_if = $this->variableFormFactory->createInputFilter($var);
 			$vars_if->add($var_if,$var_name);
 		}
 

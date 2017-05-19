@@ -14,7 +14,9 @@ use DevCms\Entity\Hydrator\PageEntityHydratorServiceFactory;
 use DevCms\Controller\PageController;
 use DevCms\Controller\AdminHomeController;
 use DevCms\Controller\PageAdminController;
-use DevCms\Form\PageFormFactory;
+use DevCms\Model\Variable\Form\FactoryFactory as VariableFormFactoryFactory;
+use DevCms\Form\PageFormFactoryFactory;
+
 return [
 	'devcms' => [
 		'content_table_name' => 'cms_content',
@@ -30,7 +32,7 @@ return [
 		'content_blocks' => [
 			'foo' => [
 				'label' => 'Header tagline',
-				'default_value' => 'optional',
+				'type' => 'textarea',
 			],
 			'foo-bar' => [
 				'label' => 'Other thang'
@@ -245,7 +247,8 @@ return [
 			'DevCms\Entity\Hydrator\PageEntityHydrator' => PageEntityHydratorServiceFactory::class,
 			'DevCms\Cache\ContentCache' => ContentCacheServiceFactory::class,
 			'DevCms\DefaultListener' => DefaultListenerServiceFactory::class,
-			'DevCms\Form\PageFormFactory' => PageFormFactory::class,
+			'DevCms\Form\PageFormFactory' => PageFormFactoryFactory::class,
+			'DevCms\Model\Variable\Form\Factory' => VariableFormFactoryFactory::class,
 		]
 	],
 	'view_helpers' => [
