@@ -49,9 +49,9 @@ return [
 		'variable_types' => [
 			'checkbox' => [
 				'element' => 'Checkbox',
-				// Optional
-				// 'hydrator' => 'ObjectProperty',
-				'hydration_strategy' => 'DevCms\Model\Variable\Hydrator\Strategy\Default',
+				'partial' => 'partial/devcms/element/checkbox',
+				'hydrator' => 'DevCms\Model\Variable\Hydrator\Checkbox',
+				'serializer' => 'DevCms\Model\Variable\Serializer\Passthrough',
 				'input_filter' => [
 					// This can either be element_spec, options, or service_locator_key
 					'options' => [
@@ -64,7 +64,9 @@ return [
 			],
 			'textarea' => [
 				'element' => 'Textarea',
-				'hydration_strategy' => 'DevCms\Model\Variable\Hydrator\Strategy\Default',
+				'partial' => 'partial/devcms/element/textarea',
+				'hydrator' => 'DevCms\Model\Variable\Hydrator\Textarea',
+				'serializer' => 'DevCms\Model\Variable\Serializer\Passthrough',
 				'input_filter' => [
 					'options' => [
 						'filters' => [
@@ -219,6 +221,10 @@ return [
 			'devcms/admin/page/list' => __DIR__ . '/../view/pages/page-admin/list.phtml',
 			'devcms/admin/page/edit' => __DIR__ . '/../view/pages/page-admin/edit.phtml',
 			'layout/devcms/admin' => __DIR__ . '/../view/templates/admin-layout.phtml',
+			'partial/devcms/element/checkbox' => __DIR__ . '/../view/partials/elements/form-row.phtml',
+			'partial/devcms/element/textarea' => __DIR__ . '/../view/partials/elements/form-row.phtml',
+			'partial/devcms/element/textbox' => __DIR__ . '/../view/partials/elements/form-row.phtml',
+			'partial/devcms/element/dropdown' => __DIR__ . '/../view/partials/elements/form-row.phtml',
 		]
 	],
 	'service_manager' => [
@@ -228,6 +234,9 @@ return [
 			'DevCms\Entity\PageEntity' => PageEntity::class,
 			'DevCms\Entity\Hydrator\Strategy\ContentBlocksStrategy' => ContentBlocksStrategy::class,
 			'DevCms\Model\Variable\Hydrator\Strategy\Default' => \Zend\Stdlib\Hydrator\Strategy\DefaultStrategy::class,
+			'DevCms\Model\Variable\Hydrator\Checkbox' => \DevCms\Model\Variable\Hydrator\Value::class,
+			'DevCms\Model\Variable\Hydrator\Textarea' => \DevCms\Model\Variable\Hydrator\Value::class,
+			'DevCms\Model\Variable\Serializer\Passthrough' => DevCms\Model\Variable\Serializer\Passthrough::class,
 		],
 		'factories' => [
 			'DevCms\Renderer\ContentRenderer' => ContentRendererServiceFactory::class,

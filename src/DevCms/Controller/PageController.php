@@ -32,8 +32,15 @@ class PageController extends AbstractController {
 		}
 
 		if(!empty($page->variables)) {
+
 			foreach($page->variables as $key => $content_block) {
-				$vm->setVariable($key,$content_block->content);
+				$type_config = $devcms_config['variable_types'][$devcms_config['layouts'][$page->layout]['variables'][$key]['type']];
+				/**
+				 * @var \DevCms\Model\Variable\Serializer\SerializerInterface $serializer
+				 */
+				$serializer = $this->serviceLocator->get($type_config['serializer']);
+				$content = $serializer->unserialize($content_block->content);
+				$vm->setVariable($key,$content);
 			}
 		}
 		$e->setResult($vm);

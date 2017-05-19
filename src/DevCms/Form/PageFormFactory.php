@@ -96,7 +96,8 @@ class PageFormFactory implements FactoryInterface {
 					'id' => 'f-' . $var_name,
 				],
 				'options' => [
-					'label' => $var['label']
+					'label' => $var['label'],
+					'__partial__' => $type_config['partial'],
 				]
 			]);
 

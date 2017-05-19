@@ -68,9 +68,12 @@ class PageAdminController extends AbstractActionController {
 				$type_config = $devcms_config['variable_types'][$devcms_config['layouts'][$layout]['variables'][$var_name]['type']];
 
 				if($fvars->has($var_name)) {
-					$hydrator = $this->serviceLocator->get($type_config['hydration_strategy']);
+					/**
+					 * @var \Zend\Stdlib\Hydrator\HydrationInterface $hydrator
+					 */
+					$hydrator = $this->serviceLocator->get($type_config['hydrator']);
 					$content_field = $fvars->get($var_name)->get('content');
-					$content_field->setValue($hydrator->hydrate($variable->content));
+					$hydrator->hydrate(['content' => $variable->content],$content_field);
 					$fvars->get($var_name)->get('id')->setValue($variable->id);
 				}
 			}
@@ -98,10 +101,12 @@ class PageAdminController extends AbstractActionController {
 			if(isset($var_data['id'])) {
 				$var->id = $var_data['id'];
 			}
-
 			$type_config = $devcms_config['variable_types'][$devcms_config['layouts'][$page->layout]['variables'][$var_name]['type']];
-			$hydrator = $this->serviceLocator->get($type_config['hydration_strategy']);
-			$var->content = $hydrator->extract($var_data['content']);
+			/**
+			 * @var \DevCms\Model\Variable\Serializer\SerializerInterface $serializer
+			 */
+			$serializer = $this->serviceLocator->get($type_config['serializer']);
+			$var->content = $serializer->serialize($var_data['content']);
 			$vars[$var_name] = $var;
 		}
 		$page->variables = $vars;

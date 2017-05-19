@@ -10,6 +10,8 @@ $this->Placeholder('DevCms_AdminLayout_Title')->append('Page Admin')->append('Ed
 $this->HeadTitle('Page Admin')->prepend('Edit "' . $page->label . '"');
 
 $form->prepare();
+
+/** @var \Zend\Form\Element $element */
 ?>
 <a href="<?=$this->Url('devcms-admin/page/list')?>" class="mdl-button mdl-js-button"><i class="material-icons">&#xE314;</i>Back to list</a>
 <div class="mdl-grid mdl-cell--12-col">
@@ -28,7 +30,10 @@ $form->prepare();
 <? foreach($form->get('vars')->getFieldsets() as $element) {?>
 				<div>
 					<?=$this->FormRow($element->get('id'))?>
-					<?=$this->FormRow($element->get('content'))?>
+<?php
+	$e_content = $element->get('content');
+	echo $this->Partial($e_content->getOption('__partial__'),['element'=>$e_content]);
+?>
 				</div>
 <? } ?>
 			<br />
