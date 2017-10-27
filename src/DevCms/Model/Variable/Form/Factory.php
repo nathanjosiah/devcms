@@ -10,7 +10,7 @@ use Zend\InputFilter\InputFilterPluginManager;
 class Factory {
 	private $formElementManager,$devCmsConfig,$inputFilterPluginManager;
 
-	public function __construct(FormElementManager $element_manager,InputFilterPluginManager $input_filter_plugin_manager,array $devcms_config) {
+	public function __construct($element_manager,InputFilterPluginManager $input_filter_plugin_manager,array $devcms_config) {
 		$this->formElementManager = $element_manager;
 		$this->devCmsConfig = $devcms_config;
 		$this->inputFilterPluginManager = $input_filter_plugin_manager;
@@ -18,7 +18,8 @@ class Factory {
 
 	public function createElement($name,array $config) {
 		$var_fieldset = new Fieldset($name);
-		$this->formElementManager->injectFactory($var_fieldset);
+
+		$this->formElementManager->injectFactory($var_fieldset,$this->formElementManager);
 
 		$type_config = $this->devCmsConfig['variable_types'][$config['type']];
 
@@ -33,6 +34,10 @@ class Factory {
 				'__partial__' => $type_config['partial'],
 			]
 		]);
+
+		if(!empty($config['type_options'])) {
+			$var_fieldset->setOptions($config['type_options']);
+		}
 
 		$var_fieldset->add([
 			'name' => 'id',

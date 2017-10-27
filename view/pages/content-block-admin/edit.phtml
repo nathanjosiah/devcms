@@ -14,7 +14,7 @@ $form->prepare();
 		<div class="cell-padding">
 			<h2 class="mdl-typography--display-1"><?=$this->escapehtml($block->label)?></h2>
 			<?=$this->form()->openTag($form)?>
-			<?=$this->formtextarea($form->get('content'))?>
+			<?=$this->Partial($form->get('content')->getOption('__partial__'),['element'=>$form->get('content')])?>
 			<br />
 			<br />
 			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save</button>
@@ -22,13 +22,3 @@ $form->prepare();
 		</div>
 	</div>
 </div>
-<?$this->inlinescript()->appendFile('//cdn.tinymce.com/4/tinymce.min.js')?>
-<?$this->inlinescript()->captureStart()?>
-<script>
-window.onload = function() {
-	tinymce.init({
-		selector: '#<?=$form->get('content')->getAttribute('id')?>'
-	});
-};
-</script>
-<?$this->inlinescript()->captureEnd()?>

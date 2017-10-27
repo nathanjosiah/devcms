@@ -10,7 +10,7 @@ $this->Placeholder('DevCms_AdminLayout_Title')->append('Page Admin')->append('Ed
 $this->HeadTitle('Page Admin')->prepend('Edit "' . $page->label . '"');
 
 $form->prepare();
-
+$fieldsets = $form->get('vars')->getFieldsets();
 /** @var \Zend\Form\Element $element */
 ?>
 <a href="<?=$this->Url('devcms-admin/page/list')?>" class="mdl-button mdl-js-button"><i class="material-icons">&#xE314;</i>Back to list</a>
@@ -19,15 +19,19 @@ $form->prepare();
 		<div class="cell-padding">
 			<?=$this->Form()->openTag($form)?>
 				<div>
-					<?=$this->FormRow($form->get('label'))?>
+					<?=$this->Partial('partial/devcms/element/textbox',['element'=>$form->get('label')])?>
 				</div>
 				<div>
-					<?=$this->FormRow($form->get('slug'))?>
+					<?=$this->Partial('partial/devcms/element/textbox',['element'=>$form->get('slug')])?>
 				</div>
 				<div>
-					<?=$this->FormRow($form->get('layout'))?>
+<?php if($fieldsets) { ?>
+					<?=$this->FormHidden($form->get('layout'))?>
+<?php } else { ?>
+					<?=$this->Partial('partial/devcms/element/dropdown',['element'=>$form->get('layout')])?>
+<?php }  ?>
 				</div>
-<? foreach($form->get('vars')->getFieldsets() as $element) {?>
+<?php  foreach($fieldsets as $element) {?>
 				<div>
 					<?=$this->FormRow($element->get('id'))?>
 <?php
@@ -35,7 +39,7 @@ $form->prepare();
 	echo $this->Partial($e_content->getOption('__partial__'),['element'=>$e_content]);
 ?>
 				</div>
-<? } ?>
+<?php  } ?>
 			<br />
 			<br />
 			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Save</button>

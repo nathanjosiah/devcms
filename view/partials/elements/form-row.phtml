@@ -1,1 +1,9 @@
-<?=$this->FormRow($this->element)?>
+<?php
+/**
+ * @var $element \Zend\Form\Element
+ */
+$element = $this->element;
+?>
+<div style="margin-bottom:16px;">
+	<?=$this->FormRow($element)?>
+</div>

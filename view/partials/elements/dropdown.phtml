@@ -1,0 +1,13 @@
+<?php
+/**
+ * @var $element \Zend\Form\Element
+ */
+$element = $this->element;
+
+$element->setAttribute('class', $element->getAttribute('class') . ' mdl-checkbox__input');
+$id = $element->getAttribute('id');
+?>
+<div style="margin-bottom: 16px">
+	<div><?=$this->FormSelect($element)?></div>
+	<label for="<?=$id?>"><?=$this->EscapeHtml($element->getLabel())?></label>
+</div>

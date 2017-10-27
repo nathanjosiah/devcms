@@ -2,18 +2,36 @@
 
 namespace DevCms\Controller;
 
+use DevCms\Entity\ContentEntity;
+use DevCms\Table\ContentBlocksTable;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use DevCms\Form\ContentBlockForm;
 
 class ContentBlockAdminController extends AbstractActionController {
-	public function listAction() {
-		$sl = $this->getServiceLocator();
-		$devcms_config = $sl->get('Config')['devcms'];
+	/**
+	 * @var array
+	 */
+	private $config;
+	/**
+	 * @var ContentBlocksTable
+	 */
+	private $blocksTable;
+	/**
+	 * @var ContentEntity
+	 */
+	private $contentEntityPrototype;
 
+	public function __construct(array $config, ContentBlocksTable $blocksTable, ContentEntity $contentEntityPrototype) {
+		$this->config = $config;
+		$this->blocksTable = $blocksTable;
+		$this->contentEntityPrototype = $contentEntityPrototype;
+	}
+
+	public function listAction() {
 		$available_blocks = [];
-		if(isset($devcms_config['content_blocks'])) {
-			foreach($devcms_config['content_blocks'] as $key => $options) {
+		if(isset($this->config['content_blocks'])) {
+			foreach($this->config['content_blocks'] as $key => $options) {
 				$available_blocks[$key] = $options['label'];
 			}
 		}
@@ -26,31 +44,27 @@ class ContentBlockAdminController extends AbstractActionController {
 	}
 
 	public function editAction() {
-		$sl = $this->getServiceLocator();
-		$content_block_table = $sl->get('DevCms\Table\ContentBlocksTable');
-		$devcms_config = $sl->get('Config')['devcms'];
-
 		$id = $this->params('id');
-		if(!isset($devcms_config['content_blocks'][$id])) {
+		if(!isset($this->config['content_blocks'][$id])) {
 			return $this->notFoundAction();
 		}
-		$block_config = $devcms_config['content_blocks'][$id];
-		$block = $content_block_table->fetchWithId($id);
+		$block_config = $this->config['content_blocks'][$id];
+		$block = $this->blocksTable->fetchWithId($id);
 		if(!$block) {
-			$block = $sl->get('DevCms\Entity\ContentEntity');
+			$block = clone $this->contentEntityPrototype;
 			$block->id = $id;
 			$block->content = (isset($block_config['default_value']) ? $block_config['default_value'] : '');
 		}
 		$block->label = $block_config['label'];
 
-		$form = ContentBlockForm::fromConfig($block_config);
+		$form = ContentBlockForm::fromConfig($block_config,$this->config['variable_types'][$block_config['type']]);
 
 		$request = $this->getRequest();
 		$form->setAttribute('action',$this->Url()->fromRoute('devcms-admin/content-block/edit',['id'=>$id]));
 		if($request->isPost()) {
 			$form->setData($request->getPost());
 			if($form->isValid()) {
-				$content_block_table->setContent($id,$form->getInputFilter()->getValue('content'));
+				$this->blocksTable->setContent($id,$form->getInputFilter()->getValue('content'));
 				return $this->Redirect()->toRoute('devcms-admin/content-block/list');
 			}
 		}

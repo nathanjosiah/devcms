@@ -1,0 +1,15 @@
+<?php
+/**
+ * @var $element \Zend\Form\Element
+ */
+$element = $this->element;
+
+$element->setAttribute('class',$element->getAttribute('class') . ' mdl-textfield__input');
+$id = $element->getAttribute('id');
+?>
+<div style="margin-bottom:16px;">
+	<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+		<?=$this->FormText($element)?>
+		<label class="mdl-textfield__label" for="<?=$id?>"><?=$element->getLabel()?></label>
+	</div>
+</div>

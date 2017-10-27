@@ -51,6 +51,9 @@ class PageFormFactory {
 		$form->add([
 			'name' => 'layout',
 			'type' => 'Select',
+			'attributes' => [
+				'id' => 'f-layouts',
+			],
 			'options' => [
 				'label' => 'Layout',
 				'value_options' => $layouts,
@@ -72,7 +75,7 @@ class PageFormFactory {
 			throw new \InvalidArgumentException('You must supply a layout id');
 		}
 
-		$devcms_config = $this->serviceLocator->get('Config')['devcms'];
+		$devcms_config = $this->devcmsConfig;
 		if(!isset($devcms_config['layouts'][$id])) {
 			throw new \InvalidArgumentException('Unknown layout id "' . $id . '"');
 		}

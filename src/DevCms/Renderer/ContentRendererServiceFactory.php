@@ -2,6 +2,7 @@
 
 namespace DevCms\Renderer;
 
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Filter\FilterChain;
@@ -9,6 +10,10 @@ use Zend\Filter\FilterChain;
 class ContentRendererServiceFactory implements FactoryInterface {
 
 	public function createService(ServiceLocatorInterface $serviceLocator) {
+		return $this($serviceLocator,'');
+	}
+
+	public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null) {
 		$filter_chain = new FilterChain();
 		$filter_chain->getPluginManager()->addPeeringServiceManager($serviceLocator);
 

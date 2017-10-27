@@ -1,0 +1,15 @@
+<?php
+/**
+ * @var $element \Zend\Form\Element
+ */
+$element = $this->element;
+
+$element->setAttribute('class',$element->getAttribute('class') . ' mdl-checkbox__input');
+$id = $element->getAttribute('id');
+?>
+<div style="margin-bottom:16px;">
+	<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="<?=$id?>">
+		<?=$this->FormCheckbox($element)?>
+		<span class="mdl-checkbox__label"><?=$element->getLabel()?></span>
+	</label>
+</div>

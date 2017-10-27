@@ -5,7 +5,7 @@ $this->Layout('layout/devcms/admin');
 $this->Placeholder('DevCms_AdminLayout_Title')->append('Page Administration');
 $this->HeadTitle('Page Administration');
 ?>
-<? if(count($pages) === 0) { ?>
+<?php  if(count($pages) === 0) { ?>
 <div class="mdl-grid mdl-cell--12-col">
 	<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
 		<div class="cell-padding">
@@ -13,7 +13,7 @@ $this->HeadTitle('Page Administration');
 		</div>
 	</div>
 </div>
-<? } else { ?>
+<?php  } else { ?>
 <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width:100%">
 	<thead>
 		<tr>
@@ -22,19 +22,19 @@ $this->HeadTitle('Page Administration');
 		</tr>
 	</thead>
 	<tbody>
-<?	foreach($pages as $page) { ?>
+<?php 	foreach($pages as $page) { ?>
 		<tr>
 			<td class="mdl-data-table__cell--non-numeric"><?=$this->EscapeHtml($page->label)?></td>
 			<td class="mdl-data-table__cell--non-numeric">
 				<a href="<?=$this->Url('devcms-admin/page/edit',['id'=>$page->id])?>">Edit</a>
 				|
-				<a href="<?=$this->Url('devcms_page',['page_slug'=>$page->slug])?>">View</a>
+				<a href="<?=str_replace('%2F','/',$this->Url('devcms_page',['page_slug'=>$page->slug]))?>">View</a>
 			</td>
 		</tr>
-<?	} ?>
+<?php 	} ?>
 	</tbody>
 </table>
-<? } ?>
+<?php  } ?>
 <div class="fixed-in-corner">
 	<a href="<?=$this->Url('devcms-admin/page/create')?>" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
 		<i class="material-icons">add</i>

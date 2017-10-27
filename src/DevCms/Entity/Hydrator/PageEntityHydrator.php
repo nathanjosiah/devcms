@@ -2,8 +2,8 @@
 
 namespace DevCms\Entity\Hydrator;
 
-use Zend\Stdlib\Hydrator\ObjectProperty;
-use Zend\Stdlib\Hydrator\NamingStrategy\UnderscoreNamingStrategy;
+use Zend\Hydrator\ObjectProperty;
+use Zend\Hydrator\NamingStrategy\UnderscoreNamingStrategy;
 use DevCms\Entity\Hydrator\Strategy\ContentBlocksStrategy;
 use DevCms\Table\ContentBlocksTable;
 

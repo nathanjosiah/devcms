@@ -1,23 +1,66 @@
 <?php
-use DevCms\Table\PagesTableServiceFactory;
-use DevCms\Entity\Hydrator\ContentEntityHydrator;
-use DevCms\Entity\ContentEntity;
-use DevCms\Renderer\ContentRendererServiceFactory;
-use DevCms\Table\ContentBlocksTableServiceFactory;
-use DevCms\Cache\ContentCacheServiceFactory;
-use DevCms\DefaultListenerServiceFactory;
-use DevCms\View\Helper\CmsContentServiceFactory;
-use DevCms\Controller\ContentBlockAdminController;
-use DevCms\Entity\PageEntity;
-use DevCms\Entity\Hydrator\Strategy\ContentBlocksStrategy;
-use DevCms\Entity\Hydrator\PageEntityHydratorServiceFactory;
-use DevCms\Controller\PageController;
-use DevCms\Controller\AdminHomeController;
-use DevCms\Controller\PageAdminController;
-use DevCms\Model\Variable\Form\FactoryFactory as VariableFormFactoryFactory;
-use DevCms\Form\PageFormFactoryFactory;
+use Zend\Mvc\Router\RouteInvokableFactory;
+use \Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
+	'controllers' => [
+		'factories' => [
+			// invokables
+			DevCms\Controller\AdminHomeController::class => InvokableFactory::class,
+
+			// real factories
+			DevCms\Controller\ContentBlockAdminController::class => DevCms\Controller\ContentBlockAdminControllerServiceFactory::class,
+			DevCms\Controller\PageAdminController::class => DevCms\Controller\PageAdminControllerServiceFactory::class,
+			DevCms\Controller\PageController::class => DevCms\Controller\PageControllerServiceFactory::class,
+		]
+	],
+	'route_manager' => [
+		'factories' => [
+			DevCms\Router\Plugin\Page::class => RouteInvokableFactory::class,
+		],
+		'delegators' => [
+			DevCms\Router\Plugin\Page::class => [
+				DevCms\Router\Plugin\PageServiceDelegator::class,
+			]
+		]
+	],
+	'service_manager' => [
+		'aliases' => [
+			'DevCms\Model\Variable\Hydrator\Strategy\Default' => Zend\Hydrator\Strategy\DefaultStrategy::class,
+			'DevCms\Model\Variable\Hydrator\Checkbox' => DevCms\Model\Variable\Hydrator\Value::class,
+			'DevCms\Model\Variable\Hydrator\Textarea' => DevCms\Model\Variable\Hydrator\Value::class,
+			'DevCms\Model\Variable\Hydrator\Textbox' => DevCms\Model\Variable\Hydrator\Value::class,
+		],
+		'factories' => [
+			// Invokables
+			Zend\Hydrator\Strategy\DefaultStrategy::class => InvokableFactory::class,
+			DevCms\Entity\Hydrator\ContentEntityHydrator::class => InvokableFactory::class,
+			DevCms\Entity\ContentEntity::class => InvokableFactory::class,
+			DevCms\Entity\PageEntity::class => InvokableFactory::class,
+			DevCms\Entity\Hydrator\Strategy\ContentBlocksStrategy::class => InvokableFactory::class,
+			DevCms\Model\Variable\Serializer\Passthrough::class => InvokableFactory::class,
+			DevCms\Model\Variable\Hydrator\Value::class => InvokableFactory::class,
+
+			// Real factories
+			DevCms\Model\Variable\Serializer\SerializerFactory::class => DevCms\Model\Variable\Serializer\SerializerFactoryServiceFactory::class,
+			DevCms\Renderer\ContentRenderer::class => DevCms\Renderer\ContentRendererServiceFactory::class,
+			DevCms\Table\ContentBlocksTable::class => DevCms\Table\ContentBlocksTableServiceFactory::class,
+			DevCms\Table\PagesTable::class => DevCms\Table\PagesTableServiceFactory::class,
+			DevCms\Entity\Hydrator\PageEntityHydrator::class => DevCms\Entity\Hydrator\PageEntityHydratorServiceFactory::class,
+			DevCms\Cache\ContentCache::class => DevCms\Cache\ContentCacheServiceFactory::class,
+			DevCms\Form\PageFormFactory::class => DevCms\Form\PageFormFactoryFactory::class,
+			DevCms\Model\Variable\Form\Factory::class => DevCms\Model\Variable\Form\FactoryFactory::class,
+			DevCms\View\Model\ViewModelFactory::class => DevCms\View\Model\ViewModelFactoryServiceFactory::class,
+		]
+	],
+	'view_helpers' => [
+		'factories' => [
+			DevCms\View\Helper\CmsContent::class => DevCms\View\Helper\CmsContentServiceFactory::class,
+		],
+		'aliases' => [
+			'CmsContent' => DevCms\View\Helper\CmsContent::class,
+		]
+	],
 	'devcms' => [
 		'content_table_name' => 'cms_content',
 		'pages_table_name' => 'cms_pages',
@@ -31,10 +74,11 @@ return [
 		'content_filters' => [],
 		'content_blocks' => [
 			'foo' => [
-				'label' => 'Header tagline',
 				'type' => 'textarea',
+				'label' => 'Header tagline',
 			],
 			'foo-bar' => [
+				'type' => 'wysiwyg',
 				'label' => 'Other thang'
 			]
 		],
@@ -46,36 +90,6 @@ return [
 			[
 				'label' => 'Regular Pages',
 				'layouts' => ['foo-bar']
-			],
-		],
-		'variable_types' => [
-			'checkbox' => [
-				'element' => 'Checkbox',
-				'partial' => 'partial/devcms/element/checkbox',
-				'hydrator' => 'DevCms\Model\Variable\Hydrator\Checkbox',
-				'serializer' => 'DevCms\Model\Variable\Serializer\Passthrough',
-				'input_filter' => [
-					// This can either be element_spec, options, or service_locator_key
-					'options' => [
-						'filters' => [
-							['name' => 'StringTrim'],
-							['name' => 'ToInt'],
-						]
-					],
-				],
-			],
-			'textarea' => [
-				'element' => 'Textarea',
-				'partial' => 'partial/devcms/element/textarea',
-				'hydrator' => 'DevCms\Model\Variable\Hydrator\Textarea',
-				'serializer' => 'DevCms\Model\Variable\Serializer\Passthrough',
-				'input_filter' => [
-					'options' => [
-						'filters' => [
-							['name' => 'StringTrim'],
-						]
-					],
-				],
 			],
 		],
 		'layouts' => [
@@ -107,23 +121,95 @@ return [
 				'template' => 'partial/my-cms-template-configurable',
 				'variables' => [
 					'header' => [
+						'type' => 'textbox',
 						'label' => 'Header thing',
 						'required' => true
 					],
 					'leftCol' => [
+						'type' => 'textbox',
 						'label' => 'Left Column',
 						'required' => true
 					],
 					'rightCol' => [
+						'type' => 'textbox',
 						'label' => 'Right Column',
 						'required' => false
 					]
 				]
 			]
-		]
+		],
+		'variable_types' => [
+			'checkbox' => [
+				'element' => 'Checkbox',
+				'partial' => 'partial/devcms/element/checkbox',
+				'hydrator' => 'DevCms\Model\Variable\Hydrator\Checkbox',
+				'serializer' => 'DevCms\Model\Variable\Serializer\Passthrough',
+				'input_filter' => [
+					// This can either be element_spec, options, or service_locator_key
+					'options' => [
+						'filters' => [
+							['name' => 'StringTrim'],
+							['name' => 'ToInt'],
+						]
+					],
+				],
+			],
+			'textarea' => [
+				'element' => 'Textarea',
+				'partial' => 'partial/devcms/element/textarea',
+				'hydrator' => 'DevCms\Model\Variable\Hydrator\Textarea',
+				'serializer' => 'DevCms\Model\Variable\Serializer\Passthrough',
+				'input_filter' => [
+					'options' => [
+						'filters' => [
+							['name' => 'StringTrim'],
+						]
+					],
+				],
+			],
+			'wysiwyg' => [
+				'element' => 'Textarea',
+				'partial' => 'partial/devcms/element/wysiwyg',
+				'hydrator' => 'DevCms\Model\Variable\Hydrator\Textarea',
+				'serializer' => 'DevCms\Model\Variable\Serializer\Passthrough',
+				'input_filter' => [
+					'options' => [
+						'filters' => [
+							['name' => 'StringTrim'],
+						]
+					],
+				],
+			],
+			'textbox' => [
+				'element' => 'Text',
+				'partial' => 'partial/devcms/element/textbox',
+				'hydrator' => 'DevCms\Model\Variable\Hydrator\Textbox',
+				'serializer' => 'DevCms\Model\Variable\Serializer\Passthrough',
+				'input_filter' => [
+					'options' => [
+						'filters' => [
+							['name' => 'StringTrim'],
+						]
+					],
+				],
+			],
+		],
 	],
 	'router' => [
 		'routes' => [
+			'devcms_page' => [
+				'priority' => 1000,
+				'type' => DevCms\Router\Plugin\Page::class,
+				'options' => [
+					'route' => '/:page_slug',
+					'constraints' => [
+						'page_slug' => '.*'
+					],
+					'defaults' => [
+						'controller' => 'DevCms\Controller\PageController'
+					]
+				]
+			],
 			'devcms-admin' => [
 				'type' => 'Literal',
 				'options' => [
@@ -207,14 +293,6 @@ return [
 			]
 		],
 	],
-	'controllers' => [
-		'invokables' => [
-			'DevCms\Controller\ContentBlockAdminController' => ContentBlockAdminController::class,
-			'DevCms\Controller\PageAdminController' => PageAdminController::class,
-			'DevCms\Controller\AdminHomeController' => AdminHomeController::class,
-			'DevCms\Controller\PageController' => PageController::class,
-		]
-	],
 	'view_manager' => [
 		'template_map' => [
 			'devcms/admin/home' => __DIR__ . '/../view/pages/admin-home.phtml',
@@ -223,40 +301,12 @@ return [
 			'devcms/admin/page/list' => __DIR__ . '/../view/pages/page-admin/list.phtml',
 			'devcms/admin/page/edit' => __DIR__ . '/../view/pages/page-admin/edit.phtml',
 			'layout/devcms/admin' => __DIR__ . '/../view/templates/admin-layout.phtml',
-			'partial/devcms/element/checkbox' => __DIR__ . '/../view/partials/elements/form-row.phtml',
-			'partial/devcms/element/textarea' => __DIR__ . '/../view/partials/elements/form-row.phtml',
-			'partial/devcms/element/textbox' => __DIR__ . '/../view/partials/elements/form-row.phtml',
-			'partial/devcms/element/dropdown' => __DIR__ . '/../view/partials/elements/form-row.phtml',
+			'partial/devcms/element/checkbox' => __DIR__ . '/../view/partials/elements/checkbox.phtml',
+			'partial/devcms/element/textarea' => __DIR__ . '/../view/partials/elements/textarea.phtml',
+			'partial/devcms/element/textbox' => __DIR__ . '/../view/partials/elements/textbox.phtml',
+			'partial/devcms/element/dropdown' => __DIR__ . '/../view/partials/elements/dropdown.phtml',
+			'partial/devcms/element/wysiwyg' => __DIR__ . '/../view/partials/elements/wysiwyg.phtml',
+			'partial/my-cms-template-configurable' => __DIR__ . '/../view/mytemplate.phtml',
 		]
 	],
-	'service_manager' => [
-		'invokables' => [
-			'DevCms\Entity\Hydrator\ContentEntityHydrator' => ContentEntityHydrator::class,
-			'DevCms\Entity\ContentEntity' => ContentEntity::class,
-			'DevCms\Entity\PageEntity' => PageEntity::class,
-			'DevCms\Entity\Hydrator\Strategy\ContentBlocksStrategy' => ContentBlocksStrategy::class,
-			'DevCms\Model\Variable\Hydrator\Strategy\Default' => \Zend\Stdlib\Hydrator\Strategy\DefaultStrategy::class,
-			'DevCms\Model\Variable\Hydrator\Checkbox' => \DevCms\Model\Variable\Hydrator\Value::class,
-			'DevCms\Model\Variable\Hydrator\Textarea' => \DevCms\Model\Variable\Hydrator\Value::class,
-			'DevCms\Model\Variable\Serializer\Passthrough' => DevCms\Model\Variable\Serializer\Passthrough::class,
-		],
-		'factories' => [
-			'DevCms\Renderer\ContentRenderer' => ContentRendererServiceFactory::class,
-			'DevCms\Table\ContentBlocksTable' => ContentBlocksTableServiceFactory::class,
-			'DevCms\Table\PagesTable' => PagesTableServiceFactory::class,
-			'DevCms\Entity\Hydrator\PageEntityHydrator' => PageEntityHydratorServiceFactory::class,
-			'DevCms\Cache\ContentCache' => ContentCacheServiceFactory::class,
-			'DevCms\DefaultListener' => DefaultListenerServiceFactory::class,
-			'DevCms\Form\PageFormFactory' => PageFormFactoryFactory::class,
-			'DevCms\Model\Variable\Form\Factory' => VariableFormFactoryFactory::class,
-		]
-	],
-	'view_helpers' => [
-		'factories' => [
-			'CmsContent' => CmsContentServiceFactory::class,
-		]
-	],
-	'listeners' => [
-		'DevCms\DefaultListener'
-	]
 ];
