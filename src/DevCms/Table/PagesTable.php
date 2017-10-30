@@ -11,18 +11,25 @@ final class PagesTable {
 	public function __construct(TableGateway $table_gateway) {
 		$this->tableGateway = $table_gateway;
 	}
+
 	/**
-	 * @return \DevCms\Entity\PageEntity
+	 * @param int $id
+	 * @return PageEntity
 	 */
-	public function fetchWithId($id) {
+	public function fetchWithId(int $id) {
 		$result = $this->tableGateway->select(['id' => $id]);
 		return $result->current();
 	}
 
+	public function deleteWithId(int $id) {
+		$result = $this->tableGateway->delete(['id' => $id]);
+	}
+
 	/**
-	 * @return \DevCms\Entity\PageEntity
+	 * @param string $slug
+	 * @return PageEntity
 	 */
-	public function fetchWithSlug($slug) {
+	public function fetchWithSlug(string $slug) {
 		$result = $this->tableGateway->select(['slug' => $slug]);
 		return $result->current();
 	}

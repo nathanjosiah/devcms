@@ -38,9 +38,10 @@ class PageAdminController extends AbstractActionController {
 
 	public function listAction() {
 		$pages = $this->pagesTable->fetchAll();
-
 		$vm = new ViewModel([
-			'pages' => $pages
+			'pages' => $pages,
+			'layouts' => $this->config['layouts'],
+			'layout_categories' => $this->config['layout_categories'],
 		]);
 		$vm->setTemplate('devcms/admin/page/list');
 		return $vm;
@@ -108,6 +109,15 @@ class PageAdminController extends AbstractActionController {
 		]);
 		$vm->setTemplate('devcms/admin/page/edit');
 		return $vm;
+	}
+
+	public function deleteAction() {
+		$page = $this->pagesTable->fetchWithId($this->Params('id'));
+		if(!$page) {
+			return $this->notFoundAction();
+		}
+		$this->pagesTable->deleteWithId($page->id);
+		return $this->Redirect()->toRoute('devcms-admin/page/list');
 	}
 
 	private function processForm(FormInterface $form,PageEntity $page) {

@@ -1,6 +1,10 @@
 <?php
 /* @var $pages \DevCms\Entity\PageEntity[] */
 $pages = $this->pages;
+
+$layouts = $this->layouts;
+$layout_categories = $this->layout_categories;
+
 $this->Layout('layout/devcms/admin');
 $this->Placeholder('DevCms_AdminLayout_Title')->append('Page Administration');
 $this->HeadTitle('Page Administration');
@@ -18,17 +22,29 @@ $this->HeadTitle('Page Administration');
 	<thead>
 		<tr>
 			<th class="mdl-data-table__cell--non-numeric">Label</th>
+			<th class="mdl-data-table__cell--non-numeric">Template</th>
 			<th class="mdl-data-table__cell--non-numeric">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
-<?php 	foreach($pages as $page) { ?>
+<?php
+foreach($pages as $page) {
+	$category_name = null;
+	foreach($layout_categories as $category) {
+		if(in_array($page->layout,$category['layouts'])) {
+			$category_name = $category['label'];
+		}
+	}
+?>
 		<tr>
 			<td class="mdl-data-table__cell--non-numeric"><?=$this->EscapeHtml($page->label)?></td>
+			<td class="mdl-data-table__cell--non-numeric"><?=($category_name ? '<strong>' . $category_name . '</strong>->' : '') . $this->EscapeHtml($layouts[$page->layout]['label'])?></td>
 			<td class="mdl-data-table__cell--non-numeric">
 				<a href="<?=$this->Url('devcms-admin/page/edit',['id'=>$page->id])?>">Edit</a>
 				|
-				<a href="<?=str_replace('%2F','/',$this->Url('devcms_page',['page_slug'=>$page->slug]))?>">View</a>
+				<a href="<?=str_replace('%2F','/',$this->Url('devcms-page',['page_slug'=>$page->slug]))?>">View</a>
+				|
+				<a href="<?=$this->Url('devcms-admin/page/delete',['id'=>$page->id])?>" onclick="if(!confirm('Are you sure you want to delete this page?')) return false;">Delete</a>
 			</td>
 		</tr>
 <?php 	} ?>

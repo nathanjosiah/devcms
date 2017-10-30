@@ -197,7 +197,7 @@ return [
 	],
 	'router' => [
 		'routes' => [
-			'devcms_page' => [
+			'devcms-page' => [
 				'priority' => 1000,
 				'type' => DevCms\Router\Plugin\Page::class,
 				'options' => [
@@ -247,7 +247,7 @@ return [
 										'action' => 'edit'
 									]
 								]
-							]
+							],
 						]
 					],
 					'page' => [
@@ -274,6 +274,16 @@ return [
 									'defaults' => [
 										'controller' => 'DevCms\Controller\PageAdminController',
 										'action' => 'edit'
+									]
+								]
+							],
+							'delete' => [
+								'type' => 'Segment',
+								'options' => [
+									'route' => '/delete/:id',
+									'defaults' => [
+										'controller' => 'DevCms\Controller\PageAdminController',
+										'action' => 'delete'
 									]
 								]
 							],

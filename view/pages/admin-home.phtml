@@ -3,10 +3,24 @@ $this->layout('layout/devcms/admin');
 $this->placeholder('DevCms_AdminLayout_Title')->append('DevCms Administration');
 $this->HeadTitle('DevCms Administration');
 ?>
-<div class="mdl-grid mdl-cell--12-col">
-	<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
-		<div class="cell-padding">
-			<h2 class="mdl-typography--display-1">Welcome</h2>
+<div class="mdl-grid mdl-cell--12-col" style="flex-direction: column">
+	<h2 class="mdl-typography--display-1">Welcome</h2>
+	<div class="mdl-grid mdl-cell--12-col">
+		<div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
+			<div class="mdl-card__title mdl-card--expand">
+				<h3 class="mdl-typography--title">Blocks of specific content</h3>
+			</div>
+			<div class="mdl-card__actions mdl-card--border">
+				<a href="<?=$this->url('devcms-admin/content-block/list')?>" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">View Content Blocks</a>
+			</div>
+		</div>
+		<div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
+			<div class="mdl-card__title mdl-card--expand">
+				<h3 class="mdl-typography--title">Full Pages</h3>
+			</div>
+			<div class="mdl-card__actions mdl-card--border">
+				<a href="<?=$this->url('devcms-admin/page/list')?>" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">View Pages</a>
+			</div>
 		</div>
 	</div>
 </div>

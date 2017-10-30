@@ -17,6 +17,10 @@ $fieldsets = $form->get('vars')->getFieldsets();
 <div class="mdl-grid mdl-cell--12-col">
 	<div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col">
 		<div class="cell-padding">
+<?php if($page->slug) { ?>
+			<a href="<?=str_replace('%2F','/',$this->Url('devcms-page',['page_slug'=>$page->slug]))?>" class="mdl-button mdl-js-button mdl-button--primary" style="float:right">View Page</a>
+<?php } ?>
+			<h2 class="mdl-typography--display-1"><?=$this->escapehtml($page->label)?></h2>
 			<?=$this->Form()->openTag($form)?>
 				<div>
 					<?=$this->Partial('partial/devcms/element/textbox',['element'=>$form->get('label')])?>
