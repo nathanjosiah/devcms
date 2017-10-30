@@ -73,70 +73,10 @@ return [
 		// May be normal filter names or normal SM keys.
 		'content_filters' => [],
 		'content_blocks' => [
-			'foo' => [
-				'type' => 'textarea',
-				'label' => 'Header tagline',
-			],
-			'foo-bar' => [
-				'type' => 'wysiwyg',
-				'label' => 'Other thang'
-			]
 		],
 		'layout_categories' => [
-			[
-				'label' => 'Landing Pages',
-				'layouts' => ['my-foo-bar','foo-bar']
-			],
-			[
-				'label' => 'Regular Pages',
-				'layouts' => ['foo-bar']
-			],
 		],
 		'layouts' => [
-			'my-foo-bar' => [
-				'label' => 'Two Column Layout',
-				'layout' => 'layout/landing-page',
-				'template' => 'partial/my-cms-template',
-				'variables' => [
-					'isThing' => [
-						'type' => 'checkbox',
-						'label' => 'Is a thing?',
-						'required' => true
-					],
-					'leftCol' => [
-						'type' => 'textarea',
-						'label' => 'Left Column',
-						'required' => true
-					],
-					'rightCol' => [
-						'type' => 'textarea',
-						'label' => 'Right Column',
-						'required' => false
-					]
-				]
-			],
-			'foo-bar' => [
-				'label' => 'Three Column Layout - editable header',
-				'layout' => 'layout/landing-page',
-				'template' => 'partial/my-cms-template-configurable',
-				'variables' => [
-					'header' => [
-						'type' => 'textbox',
-						'label' => 'Header thing',
-						'required' => true
-					],
-					'leftCol' => [
-						'type' => 'textbox',
-						'label' => 'Left Column',
-						'required' => true
-					],
-					'rightCol' => [
-						'type' => 'textbox',
-						'label' => 'Right Column',
-						'required' => false
-					]
-				]
-			]
 		],
 		'variable_types' => [
 			'checkbox' => [
