@@ -17,6 +17,10 @@ class Page extends Segment {
 
 		$page_slug = $match->getParam('page_slug');
 
+		if(!$page_slug) {
+			return null;
+		}
+
 		$page = $this->pagesTable->fetchWithSlug($page_slug);
 
 		if(!$page) {
