@@ -40,7 +40,7 @@ final class PagesTable {
 
 	public function savePage(PageEntity $page) {
 		$data = $this->tableGateway->getResultSetPrototype()->getHydrator()->extract($page);
-		if($this->fetchWithId($page->id)) {
+		if($page->id && $this->fetchWithId($page->id)) {
 			$this->tableGateway->update($data,['id'=>$page->id]);
 		}
 		else {
