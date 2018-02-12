@@ -2,11 +2,22 @@
 
 namespace DevCms\Router\Plugin;
 
-use Zend\Mvc\Router\Http\Segment;
 use Zend\Stdlib\RequestInterface;
 use DevCms\Table\PagesTable;
 
-class Page extends Segment {
+// ZF3 prep / compatibility
+if(class_exists('Zend\Router\Module',true)) {
+	class _PageZf3ForwardCompatibility extends \Zend\Router\Http\Segment {
+
+	}
+}
+else {
+	class _PageZf3ForwardCompatibility extends \Zend\Mvc\Router\Http\Segment {
+
+	}
+}
+
+class Page extends _PageZf3ForwardCompatibility {
 	protected $pagesTable;
 
 	public function match(RequestInterface $request) {
