@@ -20,7 +20,7 @@ else {
 class Page extends _PageZf3ForwardCompatibility {
 	protected $pagesTable;
 
-	public function match(RequestInterface $request) {
+	public function match(RequestInterface $request, $pathOffset = null, array $options = []) {
 		$match = parent::match($request);
 		if(!$match) {
 			return null;
